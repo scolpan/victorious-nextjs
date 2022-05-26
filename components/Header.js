@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { ConnectButton } from 'web3uikit'
 
 const styles = {
     header: `bg-[#17171A] text-white h-20 flex gap-[100px] w-full p-[30px]`,
@@ -16,7 +17,7 @@ const Header = () => {
   return (
     <div className={styles.header}>
         { /* <Image src='' alt='logo' width={220} height={220} /> */ }
-        Victorious
+        VICTORIOUS
 
         <div className={styles.headerWrapper}>
             <nav className={styles.nav}>
@@ -43,7 +44,7 @@ const Header = () => {
 
             <div className='flex items-center'>
 
-
+                <ConnectButton />
 
                 <div className={styles.inputContainer}>
 
