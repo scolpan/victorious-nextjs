@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import {MoralisProvider} from 'react-moralis'
+import {VictoriousProvider} from '../context/VictoriousContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   
@@ -11,7 +12,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       appId={process.env.NEXT_PUBLIC_APP_ID ?? "AppId Undefined Fallback"}
       >
 
-      <Component {...pageProps} />
+      <VictoriousProvider>
+        <Component {...pageProps} />
+
+      </VictoriousProvider>
+      
       
     </MoralisProvider>
 

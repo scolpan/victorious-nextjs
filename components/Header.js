@@ -1,7 +1,9 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Image from 'next/image'
 import { ConnectButton } from 'web3uikit'
+import {VictoriousContext} from '../context/VictoriousContext'
 import Search from '../assets/svg/search'
+
 
 const styles = {
 
@@ -16,7 +18,19 @@ const styles = {
 
 }
 
+
+
+
+
 const Header = () => {
+
+    const {
+        isAuthenticated,
+
+    } = useContext(VictoriousContext)    
+
+
+
   return (
     <div className={styles.header}>
         { /* <Image src='' alt='logo' width={220} height={220} /> */ }
@@ -34,7 +48,8 @@ const Header = () => {
                     </div>
                     { /* <div className={styles.badge} /> */ }
 
-                    
+                    { console.log(isAuthenticated) }
+
                 </div>
 
                 <div className={styles.navItem}>
@@ -49,6 +64,8 @@ const Header = () => {
                 <div className={styles.navItem}>
                     <div className={styles.navLink}>
                         Rewards
+
+                        
                     </div>
                     { /* <div className={styles.badge} /> */ }
                 </div>
