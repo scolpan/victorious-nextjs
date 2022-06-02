@@ -1,4 +1,7 @@
 import React, {useState} from 'react'
+import { useContext } from 'react'
+import { VictoriousContext } from '../context/VictoriousContext'
+//import { test } from '../context/VictoriousContext'
 import AmericanFootball from '../assets/svg/americanFootball'
 import Soccer from '../assets/svg/soccer'
 import Baseball from '../assets/svg/baseball'
@@ -20,13 +23,32 @@ const styles = {
 }
 
 
+//console.log(test);
+
 
 
 
 const Games = () => {
     const [checked, setChecked] = useState(false)
 
+    //const gameData = test;
+    const {
+        isAuthenticated,
+        bets
 
+    } = useContext(VictoriousContext) 
+    
+    const gameBetData = bets.sort((a,b) => a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
+
+    //forceUpdate()
+
+    //console.log(gameBetData);
+    //if (Object.keys(globalBets).length > 0) {
+        //console.log(globalBets)
+        //gameData.push(globalBets)
+    //}
+
+/*
     const gameData = [
 
         {
@@ -74,6 +96,7 @@ const Games = () => {
             startTime: "May 29 7:00 PM EDT"
         }
     ]
+*/
 
   return (
     <div className='text-white'>
@@ -95,17 +118,8 @@ const Games = () => {
 
             <div className={styles.flexCenter}>
 
+                <BettingCard title='Games' icon={fire} gameData = {gameBetData} />
                 
-                    
-
-                <BettingCard title='Games' icon={fire} gameData = {gameData} />
-                
-                
-
-                    
-
-                
-
             </div>
 
         </div>

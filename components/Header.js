@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import Image from 'next/image'
 import { ConnectButton } from 'web3uikit'
-import {VictoriousContext} from '../context/VictoriousContext'
+import { VictoriousContext } from '../context/VictoriousContext'
 import Search from '../assets/svg/search'
 
 
@@ -24,18 +24,13 @@ const styles = {
 
 const Header = () => {
 
-    const {
-        isAuthenticated,
-
-    } = useContext(VictoriousContext)    
-
-
-
+    
   return (
     <div className={styles.header}>
         { /* <Image src='' alt='logo' width={220} height={220} /> */ }
         <div className='flex items-center text-xl'>
         VICTORIOUS
+        
         </div>
 
         <div className={styles.headerWrapper}>
@@ -48,7 +43,7 @@ const Header = () => {
                     </div>
                     { /* <div className={styles.badge} /> */ }
 
-                    { console.log(isAuthenticated) }
+                    
 
                 </div>
 

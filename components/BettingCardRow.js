@@ -12,7 +12,7 @@ const BettingCardRow = ({globalBetId, sportIcon, homeTeam, awayTeam, startTime})
         <div className='w-full flex'>
     
 
-            {sportIcon}
+            {/*sportIcon*/}
             &nbsp;
             &nbsp;
             <p className='font-bold'>
