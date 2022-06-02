@@ -4,11 +4,32 @@ import { victoriousAddress } from '../lib/constants'
 import victoriousAbi from '../lib/Victorious.abi.json'
 import { ethers, BigNumber } from 'ethers'
 
+import AmericanFootball from '../assets/svg/americanFootball'
+import Soccer from '../assets/svg/soccer'
+import Baseball from '../assets/svg/baseball'
+import Hockey from '../assets/svg/hockey'
+import Basketball from '../assets/svg/basketball'
+
 export const VictoriousContext = createContext()
 
 export var bets = []
 
 var gameCount = 0
+
+
+var getSportIcon = (sportId) => {
+        
+    const sportIcon = () => {
+
+        if (sportId == 1) { return <AmericanFootball /> }
+        if (sportId == 2) { return <Baseball /> }
+        if (sportId == 3) { return <Basketball /> }
+        if (sportId == 4) { return <Hockey /> }
+        if (sportId == 5) { return <Soccer /> }
+    }
+    
+    return sportIcon()
+}
 
 export const VictoriousProvider = ({children}) => {
 
@@ -162,6 +183,7 @@ export const VictoriousProvider = ({children}) => {
                 const globalBetObj = {
                     GlobalBetId: response.globalBetId.toString(),
                     SportId: gameCreated.SportId,
+                    SportIcon: getSportIcon(gameCreated.SportId),
                     LeagueId: gameCreated.LeagueId,
                     GameId: gameCreated.GamesCreated.gameId,
                     HomeTeam: gameCreated.GamesCreated.homeTeam,

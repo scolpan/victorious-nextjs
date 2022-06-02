@@ -72,9 +72,10 @@ const Header = () => {
                 <ConnectButton />
 
                 <div className={styles.inputContainer}>
-                    <Search />
+                    { /* <Search /> 
                     <input className={styles.input} placeholder = 'Search' />
-
+                    */
+                    }     
                 </div>
 
             </div>
