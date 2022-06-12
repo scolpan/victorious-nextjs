@@ -30,6 +30,7 @@ const BettingCard = ({title, icon, gameData}) => {
                 homeTeam={item.HomeTeam}
                 awayTeam={item.AwayTeam}
                 startTime={item.StartTime}
+
                 />
             )
         })}

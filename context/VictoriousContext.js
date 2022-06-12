@@ -27,7 +27,7 @@ var getSportIcon = (sportId) => {
         if (sportId == 4) { return <Hockey /> }
         if (sportId == 5) { return <Soccer /> }
     }
-    
+
     return sportIcon()
 }
 
@@ -163,6 +163,34 @@ export const VictoriousProvider = ({children}) => {
     }
 
 
+    const placeBet = async (globalBetId, betPick) => {
+        try {
+            if (!isAuthenticated) {
+                await connectWallet()
+            }
+
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'placeBet',
+                abi: victoriousAbi,
+                params: {
+                    globalBetId: globalBetId,
+                    pick: betPick
+                },
+            }
+
+            if (isWeb3Enabled) {
+                await Moralis.executeFunction(options)
+            }
+
+        }
+        catch {
+
+        }
+
+    }
+
+
     const getGlobalBets = async (gameCreated) => {
         try {
             if (!isAuthenticated) {
@@ -180,6 +208,10 @@ export const VictoriousProvider = ({children}) => {
             if (isWeb3Enabled) {
                 const response = await Moralis.executeFunction(options)
 
+                const convertedDate = new Date(gameCreated.GamesCreated.startTime * 1000)
+
+                //console.log(convertedDate)
+
                 const globalBetObj = {
                     GlobalBetId: response.globalBetId.toString(),
                     SportId: gameCreated.SportId,
@@ -188,7 +220,7 @@ export const VictoriousProvider = ({children}) => {
                     GameId: gameCreated.GamesCreated.gameId,
                     HomeTeam: gameCreated.GamesCreated.homeTeam,
                     AwayTeam: gameCreated.GamesCreated.awayTeam,
-                    StartTime: gameCreated.GamesCreated.startTime.toString(),
+                    StartTime: convertedDate.toString(),
                     GlobalBet: response
                 }
 
@@ -343,7 +375,8 @@ export const VictoriousProvider = ({children}) => {
         <VictoriousContext.Provider
         value = {{
             isAuthenticated,
-            bets
+            bets,
+            placeBet
         }}
         >
             {children}

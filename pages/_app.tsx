@@ -1,3 +1,4 @@
+import 'reactjs-popup/dist/index.css'
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import {MoralisProvider} from 'react-moralis'
