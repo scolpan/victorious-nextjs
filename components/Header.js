@@ -28,8 +28,8 @@ const Header = () => {
   return (
     <div className={styles.header}>
         { /* <Image src='' alt='logo' width={220} height={220} /> */ }
-        <div className='flex items-center text-xl'>
-        VICTORIOUS
+        <div className='flex items-center text-3xl'>
+        victorious
         
         </div>
 

@@ -1,18 +1,10 @@
 import { VictoriousContext } from '../context/VictoriousContext'
 import React, { useContext, useEffect } from 'react'
-// import {
-//     ModalProvider,
-//     Modal,
-//     useModal,
-//     ModalTransition,
-// } from 'react-simple-hook-modal'
-// import 'react-simple-hook-modal/dist/styles.css'
-import Modal from 'react-modal'
+
 import BetModal from './BetModal'
 import { generateKey } from 'crypto'
 
 import Popup from 'reactjs-popup'
-//import './Modal.module.css'
 
 
 const styles = {
@@ -22,24 +14,9 @@ const styles = {
 
 
 
-const BettingCardRow = ({globalBetId, sportIcon, homeTeam, awayTeam, startTime}) => {
+const BettingCardRow = ({globalBetId, sportId, sportIcon, homeTeam, awayTeam, startTime}) => {
   
     const { placeBet } = useContext(VictoriousContext)
-    // const { openModal, isModalOpen, closeModal } = useModal()
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-      }
-    
-    //   function afterOpenModal() {
-    //     // references are now sync'd and can be accessed.
-    //     subtitle.style.color = '#f00';
-    //   }
-    
-      function closeModal() {
-        setIsOpen(false);
-      }
 
 
     return (
@@ -63,27 +40,13 @@ const BettingCardRow = ({globalBetId, sportIcon, homeTeam, awayTeam, startTime})
               <BetModal 
                 homeTeam={homeTeam} 
                 awayTeam={awayTeam} 
+                sportId={sportId}
                 globalBetId={globalBetId} 
                 close={close} 
                 placeBet={placeBet} 
               />  
             )}          
             </Popup>
-            {/* <Modal
-            isOpen={modalIsOpen}
-            //onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-            >
-                <BetModal 
-                    homeTeam={homeTeam} 
-                    awayTeam={awayTeam} 
-                    globalBetId={globalBetId} 
-                    close={closeModal} 
-                    placeBet={placeBet} 
-                />
-            </Modal> */}
 
         </div>
 
