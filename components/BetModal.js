@@ -96,6 +96,7 @@ const [selected, setSelected] = useState(betOptions)
           <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
           <div className="space-y-2">
             {betOptions.map((option) => ( 
+              //Only soccer has the draw option
               (sportId == 5 || (sportId != 5 && option.num != 2)) ?
               <RadioGroup.Option
                 key={option.num}

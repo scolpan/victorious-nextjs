@@ -14,7 +14,7 @@ const styles = {
 
 
 
-const BettingCardRow = ({globalBetId, sportId, sportIcon, homeTeam, awayTeam, startTime}) => {
+const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, awayTeam, startTime}) => {
   
     const { placeBet } = useContext(VictoriousContext)
 
@@ -24,7 +24,7 @@ const BettingCardRow = ({globalBetId, sportId, sportIcon, homeTeam, awayTeam, st
         
         <div className='w-full flex'>
     
-            {sportIcon}
+            <div className='flex text-base'>{leagueIcon}</div> &nbsp;&nbsp; {sportIcon}
             &nbsp;
             &nbsp;
             <p className='font-bold'>

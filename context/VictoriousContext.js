@@ -10,6 +10,17 @@ import Baseball from '../assets/svg/baseball'
 import Hockey from '../assets/svg/hockey'
 import Basketball from '../assets/svg/basketball'
 
+import Canada from '../assets/svg/canada'
+import England from '../assets/svg/england'
+import Europe from '../assets/svg/europe'
+import Germany from '../assets/svg/germany'
+import France from '../assets/svg/france'
+import Italy from '../assets/svg/italy'
+import Spain from '../assets/svg/spain'
+import UK from '../assets/svg/uk'
+import USA from '../assets/svg/usa'
+
+
 export const VictoriousContext = createContext()
 
 export var bets = []
@@ -29,6 +40,34 @@ var getSportIcon = (sportId) => {
     }
 
     return sportIcon()
+}
+
+
+
+var getLeagueIcon = (leagueId) => {
+
+    const leagueIcon = () => {
+
+        if (leagueId == 1 || leagueId == 2 ||
+            leagueId == 5 || leagueId == 8) { 
+                return <USA /> 
+            }
+        if (leagueId == 3 || leagueId == 4 ||
+            leagueId == 6 || leagueId == 10) { 
+                return (<> <Canada /> <USA /> </> )
+            }        
+                
+        if (leagueId == 11) { return <England /> }
+        if (leagueId == 12) { return <France /> }
+        if (leagueId == 13) { return <Germany /> }
+        if (leagueId == 14) { return <Spain /> }
+        if (leagueId == 15) { return <Italy /> }
+        if (leagueId == 16) { return <Europe /> }
+
+    }
+
+    return leagueIcon()
+
 }
 
 export const VictoriousProvider = ({children}) => {
@@ -217,6 +256,7 @@ export const VictoriousProvider = ({children}) => {
                     SportId: gameCreated.SportId,
                     SportIcon: getSportIcon(gameCreated.SportId),
                     LeagueId: gameCreated.LeagueId,
+                    LeagueIcon: getLeagueIcon(gameCreated.LeagueId),
                     GameId: gameCreated.GamesCreated.gameId,
                     HomeTeam: gameCreated.GamesCreated.homeTeam,
                     AwayTeam: gameCreated.GamesCreated.awayTeam,

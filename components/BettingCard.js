@@ -28,6 +28,7 @@ const BettingCard = ({title, icon, gameData}) => {
                 globalBetId={item.GlobalBetId} 
                 sportId={item.SportId}
                 sportIcon={item.SportIcon}
+                leagueIcon={item.LeagueIcon}
                 homeTeam={item.HomeTeam}
                 awayTeam={item.AwayTeam}
                 startTime={item.StartTime}
