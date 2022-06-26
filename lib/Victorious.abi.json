@@ -1,1017 +1,816 @@
 [
-    {
+  {
     "inputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "requestDate",
         "type": "uint256"
-        }
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "Victorious__BetHasToBe5Finney",
     "type": "error"
-    },
-    {
-    "inputs": [],
-    "name": "Victorious__CollectionFailed",
-    "type": "error"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "Victorious__GameHasAlreadyCommenced",
     "type": "error"
-    },
-    {
-    "inputs": [],
-    "name": "Victorious__PaymentFailed",
-    "type": "error"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "Victorious__UpkeepNotNeeded",
     "type": "error"
-    },
-    {
+  },
+  {
     "anonymous": false,
     "inputs": [
-        {
+      {
         "indexed": true,
         "internalType": "address",
         "name": "player",
         "type": "address"
-        }
+      }
     ],
     "name": "BetEnter",
     "type": "event"
-    },
-    {
+  },
+  {
     "anonymous": false,
     "inputs": [
-        {
+      {
         "indexed": true,
         "internalType": "bytes32",
         "name": "id",
         "type": "bytes32"
-        }
+      }
     ],
     "name": "ChainlinkCancelled",
     "type": "event"
-    },
-    {
+  },
+  {
     "anonymous": false,
     "inputs": [
-        {
+      {
         "indexed": true,
         "internalType": "bytes32",
         "name": "id",
         "type": "bytes32"
-        }
+      }
     ],
     "name": "ChainlinkFulfilled",
     "type": "event"
-    },
-    {
+  },
+  {
     "anonymous": false,
     "inputs": [
-        {
+      {
         "indexed": true,
         "internalType": "bytes32",
         "name": "id",
         "type": "bytes32"
-        }
+      }
     ],
     "name": "ChainlinkRequested",
     "type": "event"
-    },
-    {
+  },
+  {
     "anonymous": false,
     "inputs": [
-        {
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
         "type": "address"
-        },
-        {
+      },
+      {
         "indexed": true,
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
-        }
+      }
     ],
     "name": "OwnershipTransferred",
     "type": "event"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "betAmountPicked",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "homeWin",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "awayWin",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "tie",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "betId",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "betParticipants",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "participantId",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "globalBetId",
-        "type": "uint256"
-        },
-        {
-        "internalType": "address payable",
-        "name": "participant",
-        "type": "address"
-        },
-        {
-        "internalType": "enum Victorious.BetPick",
-        "name": "pick",
+      {
+        "internalType": "uint8",
+        "name": "sportId",
         "type": "uint8"
-        }
+      },
+      {
+        "internalType": "uint8",
+        "name": "leagueId",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "leagueName",
+        "type": "string"
+      }
     ],
-    "stateMutability": "view",
+    "name": "addNewLeague",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
+      {
+        "internalType": "uint8",
+        "name": "sportId",
+        "type": "uint8"
+      },
+      {
+        "internalType": "string",
+        "name": "sportName",
+        "type": "string"
+      }
     ],
-    "name": "betWinners",
-    "outputs": [
-        {
-        "internalType": "address payable",
-        "name": "",
-        "type": "address"
-        }
-    ],
-    "stateMutability": "view",
+    "name": "addNewSport",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "bytes32",
         "name": "_requestId",
         "type": "bytes32"
-        },
-        {
+      },
+      {
         "internalType": "bytes[]",
         "name": "_games",
         "type": "bytes[]"
-        }
+      }
     ],
     "name": "callbackGamesCreate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "bytes32",
         "name": "_requestId",
         "type": "bytes32"
-        },
-        {
+      },
+      {
         "internalType": "bytes[]",
         "name": "_games",
         "type": "bytes[]"
-        }
+      }
     ],
     "name": "callbackGamesResolve",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "bytes",
         "name": "",
         "type": "bytes"
-        }
+      }
     ],
     "name": "checkUpkeep",
     "outputs": [
-        {
+      {
         "internalType": "bool",
         "name": "upkeepNeeded",
         "type": "bool"
-        },
-        {
+      },
+      {
         "internalType": "bytes",
         "name": "",
         "type": "bytes"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "createdGames",
-    "outputs": [
-        {
+      {
         "internalType": "bytes32",
         "name": "gameId",
         "type": "bytes32"
-        },
-        {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-        },
-        {
-        "internalType": "string",
-        "name": "homeTeam",
-        "type": "string"
-        },
-        {
-        "internalType": "string",
-        "name": "awayTeam",
-        "type": "string"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "createdGamesLength",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "gameIds",
-    "outputs": [
-        {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-        }
-    ],
-    "name": "gamesCreated",
-    "outputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        },
-        {
-        "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-        },
-        {
-        "internalType": "string",
-        "name": "homeTeam",
-        "type": "string"
-        },
-        {
-        "internalType": "string",
-        "name": "awayTeam",
-        "type": "string"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-        }
-    ],
-    "name": "gamesResolved",
-    "outputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        },
-        {
-        "internalType": "uint8",
-        "name": "homeScore",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint8",
-        "name": "awayScore",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint8",
-        "name": "statusId",
-        "type": "uint8"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        }
+      }
     ],
     "name": "getBet",
     "outputs": [
-        {
+      {
         "components": [
-            {
+          {
             "internalType": "uint256",
             "name": "globalBetId",
             "type": "uint256"
-            },
-            {
+          },
+          {
             "internalType": "bytes32",
             "name": "gameId",
             "type": "bytes32"
-            },
-            {
+          },
+          {
             "internalType": "address",
             "name": "owner",
             "type": "address"
-            },
-            {
+          },
+          {
             "internalType": "uint256",
             "name": "betPrice",
             "type": "uint256"
-            },
-            {
+          },
+          {
             "internalType": "uint256",
             "name": "cutOffTime",
             "type": "uint256"
-            },
-            {
+          },
+          {
             "internalType": "uint256",
             "name": "numberOfWinners",
             "type": "uint256"
-            },
-            {
+          },
+          {
             "internalType": "uint256",
             "name": "totalPaid",
             "type": "uint256"
-            },
-            {
+          },
+          {
             "internalType": "bool",
             "name": "paidOut",
             "type": "bool"
-            }
+          }
         ],
-        "internalType": "struct Victorious.GlobalBet",
+        "internalType": "struct Victorious_Data.GlobalBet",
         "name": "",
         "type": "tuple"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        }
-    ],
-    "name": "getGameCreated",
-    "outputs": [
-        {
-        "components": [
-            {
-            "internalType": "bytes32",
-            "name": "gameId",
-            "type": "bytes32"
-            },
-            {
-            "internalType": "uint256",
-            "name": "startTime",
-            "type": "uint256"
-            },
-            {
-            "internalType": "string",
-            "name": "homeTeam",
-            "type": "string"
-            },
-            {
-            "internalType": "string",
-            "name": "awayTeam",
-            "type": "string"
-            }
-        ],
-        "internalType": "struct Victorious.GameCreate",
-        "name": "",
-        "type": "tuple"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint8",
-        "name": "leagueId",
-        "type": "uint8"
-        }
-    ],
-    "name": "getGameIds",
-    "outputs": [
-        {
-        "internalType": "bytes32[]",
-        "name": "",
-        "type": "bytes32[]"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        }
-    ],
-    "name": "getGameResolved",
-    "outputs": [
-        {
-        "components": [
-            {
-            "internalType": "bytes32",
-            "name": "gameId",
-            "type": "bytes32"
-            },
-            {
-            "internalType": "uint8",
-            "name": "homeScore",
-            "type": "uint8"
-            },
-            {
-            "internalType": "uint8",
-            "name": "awayScore",
-            "type": "uint8"
-            },
-            {
-            "internalType": "uint8",
-            "name": "statusId",
-            "type": "uint8"
-            }
-        ],
-        "internalType": "struct Victorious.GameResolve",
-        "name": "",
-        "type": "tuple"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint8",
-        "name": "sportId",
-        "type": "uint8"
-        }
-    ],
-    "name": "getLeagues",
-    "outputs": [
-        {
-        "components": [
-            {
-            "internalType": "uint8",
-            "name": "leagueId",
-            "type": "uint8"
-            },
-            {
-            "internalType": "string",
-            "name": "leagueName",
-            "type": "string"
-            }
-        ],
-        "internalType": "struct Victorious.League[]",
-        "name": "",
-        "type": "tuple[]"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "getSports",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "getUserBets",
-    "outputs": [
-        {
-        "internalType": "uint256[]",
-        "name": "",
-        "type": "uint256[]"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-        }
-    ],
-    "name": "globalBetIds",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "globalBets",
-    "outputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "globalBetId",
         "type": "uint256"
-        },
-        {
+      }
+    ],
+    "name": "getBetAmountPicked",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "homeWin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "awayWin",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tie",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Victorious_Data.AmountPicked",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "globalBetId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getBetParticipants",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "participantId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "globalBetId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address payable",
+            "name": "participant",
+            "type": "address"
+          },
+          {
+            "internalType": "enum Victorious_Data.BetPick",
+            "name": "pick",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct Victorious_Data.BetParticipant[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBetPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "bytes32",
         "name": "gameId",
         "type": "bytes32"
-        },
-        {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-        },
-        {
-        "internalType": "uint256",
-        "name": "betPrice",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "cutOffTime",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "numberOfWinners",
-        "type": "uint256"
-        },
-        {
-        "internalType": "uint256",
-        "name": "totalPaid",
-        "type": "uint256"
-        },
-        {
-        "internalType": "bool",
-        "name": "paidOut",
-        "type": "bool"
-        }
+      }
     ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "keeperInterval",
+    "name": "getGameCreated",
     "outputs": [
-        {
-        "internalType": "uint256",
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "gameId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint256",
+            "name": "startTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "homeTeam",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "awayTeam",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct Victorious_Data.GameCreate",
         "name": "",
-        "type": "uint256"
-        }
+        "type": "tuple"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "lastTimeStamp",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-        }
-    ],
-    "name": "leagueIds",
-    "outputs": [
-        {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "uint8",
-        "name": "",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "leagues",
-    "outputs": [
-        {
+      {
         "internalType": "uint8",
         "name": "leagueId",
         "type": "uint8"
-        },
-        {
-        "internalType": "string",
-        "name": "leagueName",
-        "type": "string"
-        }
+      }
+    ],
+    "name": "getGameIds",
+    "outputs": [
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "gameId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getGameResolved",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bytes32",
+            "name": "gameId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "uint8",
+            "name": "homeScore",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "awayScore",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "statusId",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct Victorious_Data.GameResolve",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "globalBetId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getGlobalBet",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "globalBetId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "gameId",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "betPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "cutOffTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "numberOfWinners",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalPaid",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "paidOut",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Victorious_Data.GlobalBet",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "sportIdx",
+        "type": "uint8"
+      }
+    ],
+    "name": "getLeagueFromSports",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "leagueId",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "leagueName",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Victorious_Data.League[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "sportId",
+        "type": "uint8"
+      }
+    ],
+    "name": "getLeagues",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint8",
+            "name": "leagueId",
+            "type": "uint8"
+          },
+          {
+            "internalType": "string",
+            "name": "leagueName",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Victorious_Data.League[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getSports",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getUserBets",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "keeperInterval",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastTimeStamp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "sportId",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "idx",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bool",
+        "name": "status",
+        "type": "bool"
+      }
+    ],
+    "name": "modifyLeague",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "nextRequestDate",
     "outputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
-        {
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "participantId",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "bytes",
         "name": "",
         "type": "bytes"
-        }
+      }
     ],
     "name": "performUpkeep",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "globalBetId",
         "type": "uint256"
-        },
-        {
-        "internalType": "enum Victorious.BetPick",
+      },
+      {
+        "internalType": "enum Victorious_Data.BetPick",
         "name": "pick",
         "type": "uint8"
-        }
+      }
     ],
     "name": "placeBet",
     "outputs": [],
     "stateMutability": "payable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "requestGameCreate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "_date",
         "type": "uint256"
-        }
+      }
     ],
     "name": "requestGamesResolve",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "resolveYesterday",
     "outputs": [
-        {
+      {
         "internalType": "bool",
         "name": "",
         "type": "bool"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "resolvedGames",
-    "outputs": [
-        {
-        "internalType": "bytes32",
-        "name": "gameId",
-        "type": "bytes32"
-        },
-        {
-        "internalType": "uint8",
-        "name": "homeScore",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint8",
-        "name": "awayScore",
-        "type": "uint8"
-        },
-        {
-        "internalType": "uint8",
-        "name": "statusId",
-        "type": "uint8"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [],
-    "name": "resolvedGamesLength",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-    },
-    {
-    "inputs": [
-        {
+      {
         "internalType": "uint256",
         "name": "newInterval",
         "type": "uint256"
-        }
+      }
     ],
     "name": "setInterval",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "uint256",
-        "name": "",
+        "name": "requestDate",
         "type": "uint256"
-        }
+      }
     ],
-    "name": "sports",
-    "outputs": [
-        {
-        "internalType": "uint8",
-        "name": "sportId",
-        "type": "uint8"
-        },
-        {
-        "internalType": "string",
-        "name": "sportName",
-        "type": "string"
-        }
-    ],
-    "stateMutability": "view",
+    "name": "setNextRequestDate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [
-        {
+      {
         "internalType": "address",
         "name": "newOwner",
         "type": "address"
-        }
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    },
-    {
-    "inputs": [
-        {
-        "internalType": "address",
+  },
+  {
+    "inputs": [],
+    "name": "vData",
+    "outputs": [
+      {
+        "internalType": "contract Victorious_Data",
         "name": "",
         "type": "address"
-        },
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
-    ],
-    "name": "userBets",
-    "outputs": [
-        {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-        }
+      }
     ],
     "stateMutability": "view",
     "type": "function"
-    },
-    {
+  },
+  {
     "inputs": [],
     "name": "withdrawLink",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-    }
+  }
 ]

@@ -157,10 +157,11 @@ const [selected, setSelected] = useState(betOptions)
     </div>
             <button className={styles.betBtn}
               // disabled={!tokenAmount || tokenAmount < 0}
-              // onClick={() => {
+               onClick={() => {
               //   setIsLoading(true)
-              //   buyTokens()
-              // }}
+                 placeBet(globalBetId, selected.num)
+                 //console.log(globalBetId, selected.num)
+               }}
             >
               Place Bet
             </button>

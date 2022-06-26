@@ -24,14 +24,14 @@ const Games = () => {
 
     const {
         isAuthenticated,
-        bets
+        bets,
 
     } = useContext(VictoriousContext) 
     
-    const gameBetData = bets.sort((a,b) => a.LeagueId - b.LeagueId || a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
+    const gameBetData = bets.sort((a,b) => b.LeagueId - a.LeagueId || b.StartTimeRaw - a.StartTimeRaw); // b - a for reverse sort
 
 
-    //console.log(gameBetData);
+    //console.log(betPrice);
 
 
   return (

@@ -22,7 +22,6 @@ import USA from '../assets/svg/usa'
 
 
 export const VictoriousContext = createContext()
-
 export var bets = []
 
 var gameCount = 0
@@ -75,6 +74,7 @@ export const VictoriousProvider = ({children}) => {
     //const [assets, setAssets] = useState([])
     const [currentAccount, setCurrentAccount] = useState('')
     const [recentTransactions, setRecentTransactions] = useState([])
+    const [betPrice, setBetPrice] = useState('')
     const [sports, setSports] = useState('')
     const [leagues, setLeagues] = useState([])
     const [gameIds, setGameIds] = useState([])
@@ -82,8 +82,9 @@ export const VictoriousProvider = ({children}) => {
     const [globalBets, setGlobalBets] = useState([])
     //const [bets, setBets] = useState([])
 
-    const [, updateState] = useState();
-    const forceUpdate = useCallback(() => updateState({}), []);
+    const [, updateState] = useState()
+    const forceUpdate = useCallback(() => updateState({}), [])
+
 
     //const sportId = 5
 
@@ -107,6 +108,7 @@ export const VictoriousProvider = ({children}) => {
         
         if (isAuthenticated) {
             await getSports()
+            await getBetPrice()
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
 
@@ -212,6 +214,7 @@ export const VictoriousProvider = ({children}) => {
                 contractAddress: victoriousAddress,
                 functionName: 'placeBet',
                 abi: victoriousAbi,
+                msgValue: betPrice,
                 params: {
                     globalBetId: globalBetId,
                     pick: betPick
@@ -261,6 +264,7 @@ export const VictoriousProvider = ({children}) => {
                     HomeTeam: gameCreated.GamesCreated.homeTeam,
                     AwayTeam: gameCreated.GamesCreated.awayTeam,
                     StartTime: convertedDate.toString(),
+                    StartTimeRaw: gameCreated.GamesCreated.startTime,
                     GlobalBet: response
                 }
 
@@ -387,7 +391,26 @@ export const VictoriousProvider = ({children}) => {
         }
     }
 
-    
+    const getBetPrice = async () => {
+        
+        if (!isAuthenticated) {
+            await connectWallet()
+        }
+
+        const options = {
+            contractAddress: victoriousAddress,
+            functionName: 'getBetPrice',
+            abi: victoriousAbi,
+        }
+
+        if (isWeb3Enabled) {
+            
+            const response = await Moralis.executeFunction(options)
+
+            await setBetPrice(response)
+
+        }
+    }
     
     const getSports = async () => {
 
