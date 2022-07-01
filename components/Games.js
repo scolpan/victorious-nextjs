@@ -28,7 +28,7 @@ const Games = () => {
 
     } = useContext(VictoriousContext) 
     
-    const gameBetData = bets.sort((a,b) => b.LeagueId - a.LeagueId || b.StartTimeRaw - a.StartTimeRaw); // b - a for reverse sort
+    const gameBetData = bets.sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || b.LeagueId - a.LeagueId); // b - a for reverse sort
 
 
     //console.log(betPrice);
@@ -54,7 +54,7 @@ const Games = () => {
 
             <div className={styles.flexCenter}>
 
-                <BettingCard title='Games' icon={fire} gameData = {gameBetData} />
+                <BettingCard title='Games' icon={fire} gameData={gameBetData} />
                 
             </div>
 

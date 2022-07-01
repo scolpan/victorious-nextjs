@@ -21,6 +21,9 @@ const BettingCard = ({title, icon, gameData}) => {
         </div>
         <br />
         {gameData.map((item, index) => {
+            
+            //console.log(index)
+            //console.log(item)
 
             return (
                 <BettingCardRow 

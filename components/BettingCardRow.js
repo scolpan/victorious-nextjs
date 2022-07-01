@@ -16,7 +16,11 @@ const styles = {
 
 const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, awayTeam, startTime}) => {
   
-    const { placeBet } = useContext(VictoriousContext)
+    const { 
+      placeBet,
+      setIsLoading,
+      setDisable
+     } = useContext(VictoriousContext)
 
 
     return (
@@ -34,8 +38,12 @@ const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, 
             <div className='mx-5'>
                 <span className='text-gray-400'>{startTime}</span>
             </div>
-            <Popup trigger={<button className="rounded px-5 ml-auto ont-bold bg-blue-500" 
-            >Bet!</button>} modal>
+            <Popup onClose={() => {
+                setIsLoading(false)
+                setDisable(false)
+                //console.log('close')
+              }} trigger={<button className="rounded px-5 ml-auto ont-bold bg-blue-500" 
+            >Bet</button>} modal>
             {close => (
               <BetModal 
                 homeTeam={homeTeam} 
@@ -49,7 +57,6 @@ const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, 
             </Popup>
 
         </div>
-
 
     </div>
 

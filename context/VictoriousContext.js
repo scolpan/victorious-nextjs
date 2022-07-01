@@ -74,6 +74,8 @@ export const VictoriousProvider = ({children}) => {
     //const [assets, setAssets] = useState([])
     const [currentAccount, setCurrentAccount] = useState('')
     const [recentTransactions, setRecentTransactions] = useState([])
+    const [disable, setDisable] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const [betPrice, setBetPrice] = useState('')
     const [sports, setSports] = useState('')
     const [leagues, setLeagues] = useState([])
@@ -225,10 +227,19 @@ export const VictoriousProvider = ({children}) => {
                 await Moralis.executeFunction(options)
             }
 
-        }
-        catch {
+            //Display message that bet has been placed, perhaps get bet details.
 
         }
+        catch (error) {
+            //console.log(error)
+            //User rejecting the transaction or any other error,
+            //display a message and enable some elements
+            //setDisable(false)
+            //setIsLoading(false)
+        }
+
+        setDisable(false)
+        setIsLoading(false)
 
     }
 
@@ -252,6 +263,7 @@ export const VictoriousProvider = ({children}) => {
 
                 const convertedDate = new Date(gameCreated.GamesCreated.startTime * 1000)
 
+                var index
                 //console.log(convertedDate)
 
                 const globalBetObj = {
@@ -269,15 +281,19 @@ export const VictoriousProvider = ({children}) => {
                 }
 
                 await setGlobalBets(globalBetObj)
-                await bets.push(globalBetObj)
+
+                //Look for already inserted globalBetId
+                index = bets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
+                //Only insert if doesn't exist
+                index === -1 ? await bets.push(globalBetObj) : "" //console.log(globalBetObj.GlobalBetId)
                 //console.log(gameCount)
 
                 
             }
 
         }
-        catch {
-            
+        catch (error) {
+            console.log(error)
         }
     }
 
@@ -439,7 +455,11 @@ export const VictoriousProvider = ({children}) => {
         value = {{
             isAuthenticated,
             bets,
-            placeBet
+            placeBet,
+            isLoading,
+            setIsLoading,
+            disable,
+            setDisable
         }}
         >
             {children}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { IoIosClose } from 'react-icons/io'
 import { VictoriousContext } from '../context/VictoriousContext'
-import { HashLoader } from 'react-spinners'
+import { ScaleLoader } from 'react-spinners'
 import Link from 'next/link'
 import { RadioGroup } from '@headlessui/react'
 
@@ -12,7 +12,8 @@ const styles = {
     title: `text-3xl font-bold flex flex-1 items-center mt-[20px] justify-center mb-[40px]`,
     content: `flex w-full ml-[30px] justify-center`,
     betBtn: `h-[30px] bg-blue-500 mt-[40px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
-
+    betBtnDisabled: `h-[30px] bg-blue-500 mt-[40px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
+    loaderContainer: `flex items-center justify-center`,
 }
 
 const betOptions = [
@@ -72,13 +73,37 @@ const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, close, placeBet })
 
 //   } = useContext(VictoriousContext)
 const [selected, setSelected] = useState(betOptions)
+//const [disable, setDisable] = useState(false);
+//const [isLoading, setIsLoading] = useState(false)
+
+
+const {
+  isLoading,
+  setIsLoading,
+  disable,
+  setDisable
+
+} = useContext(VictoriousContext) 
+
 
 
   return (
     <div className={styles.container}>
 
+        {
+        // {isLoading ? (
+        //         <>
+        //           <div className={styles.loaderContainer}>
+        //             <ScaleLoader size={80} color={"white"} />
+        //           </div>
+        //         </>
+        //       ) : (
+        //         <>
+
+        }
           <div className={styles.closeX}>
             <IoIosClose
+              //onClose={console.log('close')}
               onClick={() => {
                 close()
               }}
@@ -155,18 +180,44 @@ const [selected, setSelected] = useState(betOptions)
         </RadioGroup>
       </div>
     </div>
-            <button className={styles.betBtn}
+
+         {isLoading ? (
+                <>
+                  <div className={styles.loaderContainer}>
+                    <ScaleLoader size={80} color={"white"} />
+                  </div>
+                </>
+              ) : (
+                <>
+
+                </>
+              )}
+
+            <button className={disable ? styles.betBtnDisabled : styles.betBtn}
+                    disabled={disable}
+                    //keep it disabled before a bet option selection
               // disabled={!tokenAmount || tokenAmount < 0}
                onClick={() => {
-              //   setIsLoading(true)
-                 placeBet(globalBetId, selected.num)
-                 //console.log(globalBetId, selected.num)
+                //selected.num != undefined ?
+                //console.log(selected.num)
+                
+                if (selected.num !== undefined) {
+
+                setIsLoading(true)
+                placeBet(globalBetId, selected.num)
+                setDisable(true)
+
+                }
+                
+                
                }}
             >
               Place Bet
             </button>
-
-
+            {
+      //       </>
+      // )
+      }
     </div>
   )
 }

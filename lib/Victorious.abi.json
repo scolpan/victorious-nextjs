@@ -17,6 +17,11 @@
   },
   {
     "inputs": [],
+    "name": "Victorious__BetPlacementFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Victorious__GameHasAlreadyCommenced",
     "type": "error"
   },
