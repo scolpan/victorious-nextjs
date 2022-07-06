@@ -13,11 +13,11 @@ const styles = {
 }
 
 
-
-const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, awayTeam, startTime}) => {
+const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, 
+                         homeTeam, awayTeam, startTime }) => {
   
     const { 
-      placeBet,
+      //placeBet,
       setIsLoading,
       setDisable
      } = useContext(VictoriousContext)
@@ -51,7 +51,9 @@ const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, homeTeam, 
                 sportId={sportId}
                 globalBetId={globalBetId} 
                 close={close} 
-                placeBet={placeBet} 
+                //placeBet={placeBet} 
+                //globalBet={globalBet}
+                //betParticipants={betParticipants}
               />  
             )}          
             </Popup>

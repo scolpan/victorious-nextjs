@@ -14,7 +14,7 @@ import BettingCard from './BettingCard'
 const styles = {
     gameWrapper: `mx-auto max-w-screen-2xl`,
     h1: `text-3xl text-white`,
-    flexCenter: `flex items-center justify-center`,
+    flexCenter: `flex items-center justify-center pb-[50px]`,
 }
 
 

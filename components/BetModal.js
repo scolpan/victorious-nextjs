@@ -8,34 +8,43 @@ import { RadioGroup } from '@headlessui/react'
 
 const styles = {
     container: `py-3 pb-3 bg-[#323546] rounded-xl text-white mr-`,
-    closeX: `w-full h-[20px] flex items-center justify-end mb-[20px]`,
-    title: `text-3xl font-bold flex flex-1 items-center mt-[20px] justify-center mb-[40px]`,
+    closeX: `w-full h-[20px] flex items-center justify-end mb-[0px]`,
+    title: `text-3xl font-bold flex flex-1 items-center mt-[0px] justify-center mb-[40px]`,
     content: `flex w-full ml-[30px] justify-center`,
-    betBtn: `h-[30px] bg-blue-500 mt-[40px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
-    betBtnDisabled: `h-[30px] bg-blue-500 mt-[40px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
+    betBtn: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
+    betBtnDisabled: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
     loaderContainer: `flex items-center justify-center`,
+    info: `flex items-center justify-center`
 }
 
 const betOptions = [
   {
-    team: 'Home Team',
+    team: 'Home',
     num: 0,
-    result: 'win',
+    pct: null
+    //pct: homeBetPct,
+    //result: 'win',
   },
   {
-    team: 'Away Team',
+    team: 'Away',
     num: 1,
-    result: 'win',
+    pct: null
+    //pct: awayBetPct,
+    //result: 'win',
   },
   {
     team: 'Draw',
     num: 2,
-    result: 'draw',
+    pct: null
+    //pct: drawBetPct,
+    //result: 'draw',
   },
 ]
 
+//Important: Get the participant and globalbet obj when the modal is opened not to 
+//put strain on the resources
 
-const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, close, placeBet }) => {
+const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, close }) => {
 
   function BuildSelection(num) {
     
@@ -78,6 +87,11 @@ const [selected, setSelected] = useState(betOptions)
 
 
 const {
+  user,
+  placeBet,
+  getBetParticipants,
+  //setParticipants,
+  participants,
   isLoading,
   setIsLoading,
   disable,
@@ -85,6 +99,95 @@ const {
 
 } = useContext(VictoriousContext) 
 
+
+useEffect(() => {
+  //getBetP();
+  getBetParticipants(globalBetId)
+}, []);
+
+/*
+const getBetP = () => {
+
+  getBetParticipants(globalBetId).then(function(result) {
+    setParticipants(result)
+  })
+
+}
+*/
+
+const homeBetAmt = participants.filter(participant => {
+  
+  if (participant.BetPick == 0) {
+    return true
+  }
+  return false
+
+}).length
+
+const awayBetAmt = participants.filter(participant => {
+  
+  if (participant.BetPick == 1) {
+    return true
+  }
+  return false
+
+}).length
+
+
+const drawBetAmt = participants.filter(participant => {
+  
+  if (participant.BetPick == 2) {
+    return true
+  }
+  return false
+
+}).length
+
+//const drawBetAmt
+
+const homeBetPct = homeBetAmt == 0 ? 0 : Math.round((homeBetAmt / participants.length) * 100)
+const awayBetPct = awayBetAmt == 0 ? 0 : Math.round((awayBetAmt / participants.length) * 100)
+const drawBetPct = drawBetAmt == 0 ? 0 : Math.round((drawBetAmt / participants.length) * 100)
+
+// console.log('%' + homeWinBetPct)
+// console.log('%' + awayWinBetPct)
+// console.log('%' + drawBetPct)
+
+betOptions.filter(option => {
+
+  if (option.team == 'Home') {
+    option.pct = homeBetPct
+  }
+  if (option.team == 'Away') {
+    option.pct = awayBetPct
+  }
+  if (option.team == 'Draw') {
+    option.pct = drawBetPct
+  }
+
+})
+
+//Get the number of bets made by the signed in user
+const userBetAmt = participants.filter(p => {
+
+  // console.log('u - ' + user.attributes.ethAddress)
+  // console.log('p - ' + p.ParticipantAddress.toLowerCase())
+
+  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress) {
+    return true
+  }
+  return false
+
+}).length
+
+
+//console.log(user.attributes.ethAddress)
+
+// getBetParticipants(globalBetId).then(function(result) {
+//   console.log(result) 
+// })
+
+//console.log(getBetParticipants(globalBetId))
 
 
   return (
@@ -114,11 +217,15 @@ const {
           <div className={styles.title}>
             {homeTeam} - {awayTeam}
           </div>
+          
+          <div className={styles.info}>{ participants.length } total { participants.length == 1 ? ' bet' : ' bets' }</div>
+          <div className={styles.info}>{ userBetAmt + (userBetAmt == 1 ? ' bet' : ' bets') } by you</div>
 
-    <div className="w-full px-4 py-16">
+
+    <div className="w-full px-4 py-10">
       <div className="mx-auto w-full max-w-md">
         <RadioGroup value={selected} onChange={setSelected}>
-          <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
+          {/* <RadioGroup.Label className="sr-only"></RadioGroup.Label> */}
           <div className="space-y-2">
             {betOptions.map((option) => ( 
               //Only soccer has the draw option
@@ -150,7 +257,7 @@ const {
                             }`}
                           >
                             {/*option.team*/}
-                            {BuildSelection(option.num) + ' to ' + option.result}
+                            {BuildSelection(option.num)}
                           </RadioGroup.Label>
                           <RadioGroup.Description
                             as="span"
@@ -162,7 +269,7 @@ const {
                               {option.team}
                             </span>{' '}
                             <span aria-hidden="true">&middot;</span>{' '}
-                            <span>{option.result}</span>
+                            <span>{option.pct + '%'}</span>
                           </RadioGroup.Description>
                         </div>
                       </div>
@@ -189,7 +296,8 @@ const {
                 </>
               ) : (
                 <>
-
+                  <div className='mt-[20px] mb-[35px] flex items-center justify-center'>
+                  </div>
                 </>
               )}
 

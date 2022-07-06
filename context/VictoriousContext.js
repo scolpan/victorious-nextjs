@@ -23,9 +23,9 @@ import USA from '../assets/svg/usa'
 
 export const VictoriousContext = createContext()
 export var bets = []
+//export var betParticipants = []
 
 var gameCount = 0
-
 
 var getSportIcon = (sportId) => {
         
@@ -82,7 +82,7 @@ export const VictoriousProvider = ({children}) => {
     const [gameIds, setGameIds] = useState([])
     const [createdGames, setCreatedGames] = useState([])
     const [globalBets, setGlobalBets] = useState([])
-    //const [bets, setBets] = useState([])
+    const [participants, setParticipants] = useState([])
 
     const [, updateState] = useState()
     const forceUpdate = useCallback(() => updateState({}), [])
@@ -189,9 +189,9 @@ export const VictoriousProvider = ({children}) => {
         if (isAuthenticated) {
             
             //ensures update after useEffect
-            if (gameCount === bets.length) {
+            //if (gameCount === bets.length) {
                 forceUpdate()
-            }
+            //}
             //await getGlobalBets(createdGames)
             
         } else {
@@ -224,10 +224,28 @@ export const VictoriousProvider = ({children}) => {
             }
 
             if (isWeb3Enabled) {
-                await Moralis.executeFunction(options)
+
+                const response = await Moralis.executeFunction(options)
+                const receipt = await response.wait()
+
+                //console.log(receipt)
+
+                //Update participant list
+                await getBetParticipants(globalBetId)
+
+                //const participants = await getBetParticipants(globalBetId)
+                //get globalbet object with globalbetid
+
             }
 
             //Display message that bet has been placed, perhaps get bet details.
+            //Number of participants
+            //% of bets for each outcome
+            //If the current connected address is a participant or not and..
+            //..how much is he/she invested in the bet.
+            //How much the estimated payout will be. (Subject to change)
+            //Estimated payout if the current address were to bet
+
 
         }
         catch (error) {
@@ -263,8 +281,7 @@ export const VictoriousProvider = ({children}) => {
 
                 const convertedDate = new Date(gameCreated.GamesCreated.startTime * 1000)
 
-                var index
-                //console.log(convertedDate)
+                //const participants = await getBetParticipants(response.globalBetId.toString())
 
                 const globalBetObj = {
                     GlobalBetId: response.globalBetId.toString(),
@@ -277,18 +294,18 @@ export const VictoriousProvider = ({children}) => {
                     AwayTeam: gameCreated.GamesCreated.awayTeam,
                     StartTime: convertedDate.toString(),
                     StartTimeRaw: gameCreated.GamesCreated.startTime,
-                    GlobalBet: response
+                    //GlobalBet: response,
+                    //Participants: participants
                 }
 
                 await setGlobalBets(globalBetObj)
 
                 //Look for already inserted globalBetId
-                index = bets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
+                const index = bets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
                 //Only insert if doesn't exist
                 index === -1 ? await bets.push(globalBetObj) : "" //console.log(globalBetObj.GlobalBetId)
                 //console.log(gameCount)
 
-                
             }
 
         }
@@ -297,6 +314,52 @@ export const VictoriousProvider = ({children}) => {
         }
     }
 
+
+    const getBetParticipants = async (globalBetId) => {
+        
+        try {
+            if (!isAuthenticated) {
+                await connectWallet()
+            }
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'getBetParticipants',
+                abi: victoriousAbi,
+                params: {
+                    globalBetId: globalBetId
+                },
+            }
+
+            if (isWeb3Enabled) {
+                
+                const response = await Moralis.executeFunction(options)
+
+                var betParticipants = []
+
+                response.forEach(async (p) => {
+
+                    const betParticipantObj = {
+                        ParticipantId: p.participantId.toString(),
+                        GlobalBetId: globalBetId,
+                        ParticipantAddress: p.participant,
+                        BetPick: p.pick
+                    }
+
+                    await betParticipants.push(betParticipantObj)
+                
+                })
+
+                //return betParticipants
+                setParticipants(betParticipants)
+
+            }
+
+        }
+        catch {
+
+        }
+
+    }
 
 
     const getCreatedGames = async (gameId, sportId, leagueId) => {
@@ -324,7 +387,7 @@ export const VictoriousProvider = ({children}) => {
 
                 await setCreatedGames(gameCreatedObj)
 
-                gameCount++
+                //gameCount++
                 //console.log("LeagueId: " + leagueId)
                 //console.log(response)
             }
@@ -454,8 +517,12 @@ export const VictoriousProvider = ({children}) => {
         <VictoriousContext.Provider
         value = {{
             isAuthenticated,
+            user,
             bets,
             placeBet,
+            participants,
+            //setParticipants,
+            getBetParticipants,
             isLoading,
             setIsLoading,
             disable,

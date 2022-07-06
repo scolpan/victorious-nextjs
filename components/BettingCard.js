@@ -19,7 +19,7 @@ const BettingCard = ({title, icon, gameData}) => {
             </div> 
 
         </div>
-        <br />
+
         {gameData.map((item, index) => {
             
             //console.log(index)
@@ -35,7 +35,8 @@ const BettingCard = ({title, icon, gameData}) => {
                 homeTeam={item.HomeTeam}
                 awayTeam={item.AwayTeam}
                 startTime={item.StartTime}
-
+                //globalBet={item.GlobalBet}
+                //betParticipants={item.Participants}
                 />
             )
         })}
