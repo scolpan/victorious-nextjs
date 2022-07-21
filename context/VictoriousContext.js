@@ -81,6 +81,7 @@ export const VictoriousProvider = ({children}) => {
     const [leagues, setLeagues] = useState([])
     const [gameIds, setGameIds] = useState([])
     const [createdGames, setCreatedGames] = useState([])
+    const [resolvedGame, setResolvedGame] = useState([])
     const [globalBets, setGlobalBets] = useState([])
     const [participants, setParticipants] = useState([])
 
@@ -292,8 +293,11 @@ export const VictoriousProvider = ({children}) => {
                     GameId: gameCreated.GamesCreated.gameId,
                     HomeTeam: gameCreated.GamesCreated.homeTeam,
                     AwayTeam: gameCreated.GamesCreated.awayTeam,
-                    StartTime: convertedDate.toString(),
+                    //StartTime: convertedDate.toString(),
+                    StartTime: convertedDate.toLocaleString(),
                     StartTimeRaw: gameCreated.GamesCreated.startTime,
+                    BetPrice: ethers.utils.formatEther(response.betPrice),
+                    WinningsPaid: ethers.utils.formatEther(response.totalPaid),
                     //GlobalBet: response,
                     //Participants: participants
                 }
@@ -390,6 +394,36 @@ export const VictoriousProvider = ({children}) => {
                 //gameCount++
                 //console.log("LeagueId: " + leagueId)
                 //console.log(response)
+            }
+
+        }
+        catch {
+            
+        }
+    }
+
+
+    const getResolvedGame = async (gameId) => {
+        try {
+            if (!isAuthenticated) {
+                await connectWallet()
+            }
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'getGameResolved',
+                abi: victoriousAbi,
+                params: {
+                    gameId: gameId
+                },
+            }
+
+            if (isWeb3Enabled) {
+                const response = await Moralis.executeFunction(options)
+
+                const gameResolvedObj = response
+
+                await setResolvedGame(gameResolvedObj)
+
             }
 
         }
@@ -521,8 +555,9 @@ export const VictoriousProvider = ({children}) => {
             bets,
             placeBet,
             participants,
-            //setParticipants,
             getBetParticipants,
+            resolvedGame,
+            getResolvedGame,
             isLoading,
             setIsLoading,
             disable,

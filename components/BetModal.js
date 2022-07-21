@@ -4,12 +4,12 @@ import { VictoriousContext } from '../context/VictoriousContext'
 import { ScaleLoader } from 'react-spinners'
 import Link from 'next/link'
 import { RadioGroup } from '@headlessui/react'
-
+import { rundownStatus } from '../lib/constants'
 
 const styles = {
     container: `py-3 pb-3 bg-[#323546] rounded-xl text-white mr-`,
     closeX: `w-full h-[20px] flex items-center justify-end mb-[0px]`,
-    title: `text-3xl font-bold flex flex-1 items-center mt-[0px] justify-center mb-[40px]`,
+    title: `text-3xl font-bold flex flex-1 items-center mt-[0px] justify-center mb-[30px]`,
     content: `flex w-full ml-[30px] justify-center`,
     betBtn: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
     betBtnDisabled: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
@@ -21,21 +21,24 @@ const betOptions = [
   {
     team: 'Home',
     num: 0,
-    pct: null
+    pct: null,
+    score: null,
     //pct: homeBetPct,
     //result: 'win',
   },
   {
     team: 'Away',
     num: 1,
-    pct: null
+    pct: null,
+    score: null,
     //pct: awayBetPct,
     //result: 'win',
   },
   {
     team: 'Draw',
     num: 2,
-    pct: null
+    pct: null,
+    score: null,
     //pct: drawBetPct,
     //result: 'draw',
   },
@@ -44,7 +47,8 @@ const betOptions = [
 //Important: Get the participant and globalbet obj when the modal is opened not to 
 //put strain on the resources
 
-const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, close }) => {
+const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, 
+                    gameId, close, betPrice, winningsPaid }) => {
 
   function BuildSelection(num) {
     
@@ -57,7 +61,7 @@ const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, close }) => {
       returnVal = awayTeam
     }
     else if (sportId == 5 && num == 2) {
-      returnVal = 'Teams'
+      returnVal = 'Draw'
     }
 
     return returnVal
@@ -90,8 +94,9 @@ const {
   user,
   placeBet,
   getBetParticipants,
-  //setParticipants,
   participants,
+  getResolvedGame,
+  resolvedGame,
   isLoading,
   setIsLoading,
   disable,
@@ -103,6 +108,7 @@ const {
 useEffect(() => {
   //getBetP();
   getBetParticipants(globalBetId)
+  getResolvedGame(gameId)
 }, []);
 
 /*
@@ -149,6 +155,13 @@ const homeBetPct = homeBetAmt == 0 ? 0 : Math.round((homeBetAmt / participants.l
 const awayBetPct = awayBetAmt == 0 ? 0 : Math.round((awayBetAmt / participants.length) * 100)
 const drawBetPct = drawBetAmt == 0 ? 0 : Math.round((drawBetAmt / participants.length) * 100)
 
+const homeScore = resolvedGame.homeScore
+const awayScore = resolvedGame.awayScore
+
+const gameStatus = rundownStatus[resolvedGame.statusId]
+
+//console.log(gameStatus)
+
 // console.log('%' + homeWinBetPct)
 // console.log('%' + awayWinBetPct)
 // console.log('%' + drawBetPct)
@@ -157,9 +170,11 @@ betOptions.filter(option => {
 
   if (option.team == 'Home') {
     option.pct = homeBetPct
+    option.score = homeScore
   }
   if (option.team == 'Away') {
     option.pct = awayBetPct
+    option.score = awayScore
   }
   if (option.team == 'Draw') {
     option.pct = drawBetPct
@@ -180,8 +195,14 @@ const userBetAmt = participants.filter(p => {
 
 }).length
 
+const totalCashPool = betPrice * participants.length
 
-//console.log(user.attributes.ethAddress)
+//console.log(betPrice)
+//console.log(winningsPaid)
+
+
+//const test = resolvedGame
+//console.log(test)
 
 // getBetParticipants(globalBetId).then(function(result) {
 //   console.log(result) 
@@ -218,6 +239,8 @@ const userBetAmt = participants.filter(p => {
             {homeTeam} - {awayTeam}
           </div>
           
+          <div className={styles.info}>Game status: { gameStatus }</div>
+          <div className={styles.info}>Total cash pool: { totalCashPool } ETH</div>
           <div className={styles.info}>{ participants.length } total { participants.length == 1 ? ' bet' : ' bets' }</div>
           <div className={styles.info}>{ userBetAmt + (userBetAmt == 1 ? ' bet' : ' bets') } by you</div>
 
@@ -258,6 +281,10 @@ const userBetAmt = participants.filter(p => {
                           >
                             {/*option.team*/}
                             {BuildSelection(option.num)}
+                            {' '}
+                            { option.team != 'Draw' ? <span aria-hidden="true">&middot;</span> : '' } 
+                            {' '}
+                            { <span>{option.score}</span> }
                           </RadioGroup.Label>
                           <RadioGroup.Description
                             as="span"
@@ -269,7 +296,7 @@ const userBetAmt = participants.filter(p => {
                               {option.team}
                             </span>{' '}
                             <span aria-hidden="true">&middot;</span>{' '}
-                            <span>{option.pct + '%'}</span>
+                            <span>{option.pct + '%'} of all bets</span>
                           </RadioGroup.Description>
                         </div>
                       </div>

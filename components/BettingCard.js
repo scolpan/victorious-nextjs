@@ -29,12 +29,15 @@ const BettingCard = ({title, icon, gameData}) => {
                 <BettingCardRow 
                 key={index} 
                 globalBetId={item.GlobalBetId} 
+                gameId={item.GameId}
                 sportId={item.SportId}
                 sportIcon={item.SportIcon}
                 leagueIcon={item.LeagueIcon}
                 homeTeam={item.HomeTeam}
                 awayTeam={item.AwayTeam}
                 startTime={item.StartTime}
+                betPrice={item.BetPrice}
+                winningsPaid={item.WinningsPaid}
                 //globalBet={item.GlobalBet}
                 //betParticipants={item.Participants}
                 />

@@ -1,20 +1,15 @@
 import { VictoriousContext } from '../context/VictoriousContext'
 import React, { useContext, useEffect } from 'react'
-
 import BetModal from './BetModal'
 import { generateKey } from 'crypto'
-
 import Popup from 'reactjs-popup'
-
 
 const styles = {
     bettingCardRow: `flex items-center justify-between mb-4 text-[0.93rem]`,
-
 }
 
-
-const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon, 
-                         homeTeam, awayTeam, startTime }) => {
+const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon, 
+                         homeTeam, awayTeam, startTime, betPrice, winningsPaid }) => {
   
     const { 
       //placeBet,
@@ -49,8 +44,11 @@ const BettingCardRow = ({globalBetId, sportId, sportIcon, leagueIcon,
                 homeTeam={homeTeam} 
                 awayTeam={awayTeam} 
                 sportId={sportId}
-                globalBetId={globalBetId} 
+                globalBetId={globalBetId}
+                gameId={gameId}
                 close={close} 
+                betPrice={betPrice}
+                winningsPaid={winningsPaid}
                 //placeBet={placeBet} 
                 //globalBet={globalBet}
                 //betParticipants={betParticipants}
