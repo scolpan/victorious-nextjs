@@ -26,8 +26,31 @@ const Games = () => {
         bets,
 
     } = useContext(VictoriousContext) 
+
+    //Returns true if date given is newer than yesterday, false otherwise.
+    const checkDate = (date) => {
+
+        let controlDate = date * 1000
+
+        let today = new Date()
+        let yesterday = today.setDate(today.getDate() - 1)
+
+        //console.log(yesterday)
+        //console.log(controlDate > yesterday)
+
+        return controlDate > yesterday
+
+    }
     
-    const gameBetData = bets.sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || b.LeagueId - a.LeagueId); // b - a for reverse sort
+    //Show only games from the last 24 hours. 
+    //Get rid of the Bet button, 
+    //instead place the link on the home-away display text.
+
+    const gameBetData = bets
+        .filter(bet => { return checkDate(bet.StartTimeRaw) } )
+        .sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || 
+                       b.LeagueId - a.LeagueId || 
+                       a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
 
 
     //console.log(betPrice);

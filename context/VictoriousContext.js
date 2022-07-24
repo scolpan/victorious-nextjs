@@ -297,6 +297,7 @@ export const VictoriousProvider = ({children}) => {
                     StartTime: convertedDate.toLocaleString(),
                     StartTimeRaw: gameCreated.GamesCreated.startTime,
                     BetPrice: ethers.utils.formatEther(response.betPrice),
+                    PaidOut: response.paidOut,
                     WinningsPaid: ethers.utils.formatEther(response.totalPaid),
                     //GlobalBet: response,
                     //Participants: participants

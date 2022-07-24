@@ -23,6 +23,8 @@ const betOptions = [
     num: 0,
     pct: null,
     score: null,
+    userBetCount: null,
+    payoutEstimate: null,
     //pct: homeBetPct,
     //result: 'win',
   },
@@ -31,6 +33,8 @@ const betOptions = [
     num: 1,
     pct: null,
     score: null,
+    userBetCount: null,
+    payoutEstimate: null,
     //pct: awayBetPct,
     //result: 'win',
   },
@@ -39,6 +43,8 @@ const betOptions = [
     num: 2,
     pct: null,
     score: null,
+    userBetCount: null,
+    payoutEstimate: null,
     //pct: drawBetPct,
     //result: 'draw',
   },
@@ -48,17 +54,17 @@ const betOptions = [
 //put strain on the resources
 
 const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, 
-                    gameId, close, betPrice, winningsPaid }) => {
+                    gameId, close, betPrice, paidOut, winningsPaid }) => {
 
   function BuildSelection(num) {
     
     let returnVal
 
     if (num == 0) {
-      returnVal = homeTeam
+      returnVal = homeTeam + ' (Home)'
     }
     else if (num == 1) {
-      returnVal = awayTeam
+      returnVal = awayTeam + ' (Away)'
     }
     else if (sportId == 5 && num == 2) {
       returnVal = 'Draw'
@@ -160,42 +166,92 @@ const awayScore = resolvedGame.awayScore
 
 const gameStatus = rundownStatus[resolvedGame.statusId]
 
-//console.log(gameStatus)
+//console.log(paidOut)
 
 // console.log('%' + homeWinBetPct)
 // console.log('%' + awayWinBetPct)
 // console.log('%' + drawBetPct)
+
+const totalCashPool = betPrice * participants.length
+const payoutEstHome = (totalCashPool / homeBetAmt) * 0.95
+const payoutEstAway = (totalCashPool / awayBetAmt) * 0.95
+const payoutEstDraw = (totalCashPool / drawBetAmt) * 0.95
+
+
+
+//Get the number of bets made by the signed in user for the home team
+const userBetAmtHome = participants.filter(p => {
+
+  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+      p.BetPick == 0) {
+        return true
+  }
+  return false
+
+}).length
+
+//Get the number of bets made by the signed in user for the away team
+const userBetAmtAway = participants.filter(p => {
+
+  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+      p.BetPick == 1) {
+        return true
+  }
+  return false
+
+}).length
+
+//Get the number of bets made by the signed in user for a draw
+const userBetAmtDraw = participants.filter(p => {
+
+  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+      p.BetPick == 2) {
+        return true
+  }
+  return false
+
+}).length
+
+
 
 betOptions.filter(option => {
 
   if (option.team == 'Home') {
     option.pct = homeBetPct
     option.score = homeScore
+    option.userBetCount = userBetAmtHome
+    option.payoutEstimate = payoutEstHome * userBetAmtHome
+
   }
   if (option.team == 'Away') {
     option.pct = awayBetPct
     option.score = awayScore
+    option.userBetCount = userBetAmtAway
+    option.payoutEstimate = payoutEstAway * userBetAmtAway
+
   }
   if (option.team == 'Draw') {
     option.pct = drawBetPct
+    option.userBetCount = userBetAmtDraw
+    option.payoutEstimate = payoutEstDraw * userBetAmtDraw
+
   }
 
 })
 
 //Get the number of bets made by the signed in user
-const userBetAmt = participants.filter(p => {
+// const userBetAmt = participants.filter(p => {
 
-  // console.log('u - ' + user.attributes.ethAddress)
-  // console.log('p - ' + p.ParticipantAddress.toLowerCase())
+//   if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress) {
+//     return true
+//   }
+//   return false
 
-  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress) {
-    return true
-  }
-  return false
+// }).length
 
-}).length
 
-const totalCashPool = betPrice * participants.length
+
+
 
 //console.log(betPrice)
 //console.log(winningsPaid)
@@ -241,8 +297,8 @@ const totalCashPool = betPrice * participants.length
           
           <div className={styles.info}>Game status: { gameStatus }</div>
           <div className={styles.info}>Total cash pool: { totalCashPool } ETH</div>
-          <div className={styles.info}>{ participants.length } total { participants.length == 1 ? ' bet' : ' bets' }</div>
-          <div className={styles.info}>{ userBetAmt + (userBetAmt == 1 ? ' bet' : ' bets') } by you</div>
+          <div className={styles.info}>{ participants.length } total { participants.length == 1 ? ' pick' : ' picks' }</div>
+          {/* <div className={styles.info}>{ userBetAmt + (userBetAmt == 1 ? ' pick' : ' picks') } by you</div> */}
 
 
     <div className="w-full px-4 py-10">
@@ -292,11 +348,12 @@ const totalCashPool = betPrice * participants.length
                               checked ? 'text-sky-100' : 'text-gray-500'
                             }`}
                           >
-                            <span>
+                            {/* <span>
                               {option.team}
                             </span>{' '}
-                            <span aria-hidden="true">&middot;</span>{' '}
-                            <span>{option.pct + '%'} of all bets</span>
+                            <span aria-hidden="true">&middot;</span>{' '} */}
+                            <span>{option.pct + '%'} pick rate</span>
+                            { option.userBetCount > 0 ? <span aria-hidden="true"> &middot; { option.userBetCount + (option.userBetCount == 1 ? ' pick' : ' picks') } by you &middot; { paidOut ? 'Winnings: ' : 'Psbl payout: ' } { +option.payoutEstimate.toFixed(5) } ETH</span> : '' }
                           </RadioGroup.Description>
                         </div>
                       </div>

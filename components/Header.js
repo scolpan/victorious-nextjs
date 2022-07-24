@@ -39,7 +39,7 @@ const Header = () => {
 
                 <div className={styles.navItem}>
                     <div className={styles.navLink}>
-                        Sports
+                        Home
                     </div>
                     { /* <div className={styles.badge} /> */ }
 

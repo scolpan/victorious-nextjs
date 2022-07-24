@@ -9,7 +9,8 @@ const styles = {
 }
 
 const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon, 
-                         homeTeam, awayTeam, startTime, betPrice, winningsPaid }) => {
+                         homeTeam, awayTeam, startTime, betPrice, paidOut,
+                         winningsPaid }) => {
   
     const { 
       //placeBet,
@@ -26,14 +27,37 @@ const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon,
             <div className='flex text-base'>{leagueIcon}</div> &nbsp;&nbsp; {sportIcon}
             &nbsp;
             &nbsp;
-            <p className='font-bold'>
-                {homeTeam} - {awayTeam}
-            </p>
-            
+            <Popup onClose={() => {
+                setIsLoading(false)
+                setDisable(false)
+                //console.log('close')
+              }} trigger=
+            {
+              <p className='font-bold cursor-pointer hover:opacity-60'>
+                  {homeTeam} - {awayTeam}
+              </p>
+            } modal>
+            {close => (
+              <BetModal 
+                homeTeam={homeTeam} 
+                awayTeam={awayTeam} 
+                sportId={sportId}
+                globalBetId={globalBetId}
+                gameId={gameId}
+                close={close} 
+                betPrice={betPrice}
+                paidOut={paidOut}
+                winningsPaid={winningsPaid}
+                //placeBet={placeBet} 
+                //globalBet={globalBet}
+                //betParticipants={betParticipants}
+              />  
+            )} 
+            </Popup>
             <div className='mx-5'>
                 <span className='text-gray-400'>{startTime}</span>
             </div>
-            <Popup onClose={() => {
+            {/* <Popup onClose={() => {
                 setIsLoading(false)
                 setDisable(false)
                 //console.log('close')
@@ -54,7 +78,7 @@ const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon,
                 //betParticipants={betParticipants}
               />  
             )}          
-            </Popup>
+            </Popup> */}
 
         </div>
 
