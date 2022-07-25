@@ -262,6 +262,19 @@ export const VictoriousProvider = ({children}) => {
 
     }
 
+    const gameStarted = (date) => {
+
+        let gameStartDate = date * 1000
+
+        let now = new Date()
+        //let yesterday = today.setDate(today.getDate() - 1)
+
+        //console.log(yesterday)
+        //console.log(controlDate > yesterday)
+
+        return now > gameStartDate
+
+    }
 
     const getGlobalBets = async (gameCreated) => {
         try {
@@ -296,6 +309,7 @@ export const VictoriousProvider = ({children}) => {
                     //StartTime: convertedDate.toString(),
                     StartTime: convertedDate.toLocaleString(),
                     StartTimeRaw: gameCreated.GamesCreated.startTime,
+                    GameStarted: gameStarted(gameCreated.GamesCreated.startTime),
                     BetPrice: ethers.utils.formatEther(response.betPrice),
                     PaidOut: response.paidOut,
                     WinningsPaid: ethers.utils.formatEther(response.totalPaid),

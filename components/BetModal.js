@@ -24,7 +24,8 @@ const betOptions = [
     pct: null,
     score: null,
     userBetCount: null,
-    payoutEstimate: null,
+    winner: false,
+    winnings: null,
     //pct: homeBetPct,
     //result: 'win',
   },
@@ -34,7 +35,8 @@ const betOptions = [
     pct: null,
     score: null,
     userBetCount: null,
-    payoutEstimate: null,
+    winner: false,
+    winnings: null,
     //pct: awayBetPct,
     //result: 'win',
   },
@@ -44,7 +46,8 @@ const betOptions = [
     pct: null,
     score: null,
     userBetCount: null,
-    payoutEstimate: null,
+    winner: false,
+    winnings: null,
     //pct: drawBetPct,
     //result: 'draw',
   },
@@ -54,7 +57,8 @@ const betOptions = [
 //put strain on the resources
 
 const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId, 
-                    gameId, close, betPrice, paidOut, winningsPaid }) => {
+                    gameId, close, gameStarted, betPrice, paidOut, 
+                    winningsPaid }) => {
 
   function BuildSelection(num) {
     
@@ -88,12 +92,11 @@ const BetModal = ({ homeTeam, awayTeam, sportId, globalBetId,
     )
   }
 
-//   const {
 
-//   } = useContext(VictoriousContext)
+
+
 const [selected, setSelected] = useState(betOptions)
-//const [disable, setDisable] = useState(false);
-//const [isLoading, setIsLoading] = useState(false)
+
 
 
 const {
@@ -112,20 +115,13 @@ const {
 
 
 useEffect(() => {
-  //getBetP();
+
   getBetParticipants(globalBetId)
   getResolvedGame(gameId)
+
 }, []);
 
-/*
-const getBetP = () => {
 
-  getBetParticipants(globalBetId).then(function(result) {
-    setParticipants(result)
-  })
-
-}
-*/
 
 const homeBetAmt = participants.filter(participant => {
   
@@ -166,6 +162,46 @@ const awayScore = resolvedGame.awayScore
 
 const gameStatus = rundownStatus[resolvedGame.statusId]
 
+
+const gameResult = () => {
+
+  let result;
+
+  if (resolvedGame.statusId == 8 || resolvedGame.statusId == 11) {
+
+    if (homeScore > awayScore) {
+      result = 0
+    }
+    else if (awayScore > homeScore) {
+      result = 1
+    }
+    else if (homeScore == awayScore) {
+      result = 2
+    }
+
+    return result
+
+  }  
+
+}
+
+//Select corresponding radio option when the final result is available
+useEffect(() => {
+
+  setSelected(betOptions[gameResult()])
+
+}, [resolvedGame]);
+
+
+
+//console.log(gameStarted)
+
+// useEffect(() => {
+//   //console.log(gameResult())
+//   setSelected(betOptions[gameResult()])
+
+// }, []);
+
 //console.log(paidOut)
 
 // console.log('%' + homeWinBetPct)
@@ -173,10 +209,9 @@ const gameStatus = rundownStatus[resolvedGame.statusId]
 // console.log('%' + drawBetPct)
 
 const totalCashPool = betPrice * participants.length
-const payoutEstHome = (totalCashPool / homeBetAmt) * 0.95
-const payoutEstAway = (totalCashPool / awayBetAmt) * 0.95
-const payoutEstDraw = (totalCashPool / drawBetAmt) * 0.95
-
+const winningsEstHome = (totalCashPool / homeBetAmt) * 0.95
+const winningsEstAway = (totalCashPool / awayBetAmt) * 0.95
+const winningsEstDraw = (totalCashPool / drawBetAmt) * 0.95
 
 
 //Get the number of bets made by the signed in user for the home team
@@ -212,7 +247,7 @@ const userBetAmtDraw = participants.filter(p => {
 
 }).length
 
-
+//setSelected(betOptions[1])
 
 betOptions.filter(option => {
 
@@ -220,24 +255,30 @@ betOptions.filter(option => {
     option.pct = homeBetPct
     option.score = homeScore
     option.userBetCount = userBetAmtHome
-    option.payoutEstimate = payoutEstHome * userBetAmtHome
+    option.winner = paidOut && (homeScore > awayScore)
+    option.winnings = winningsEstHome * userBetAmtHome
 
   }
   if (option.team == 'Away') {
     option.pct = awayBetPct
     option.score = awayScore
     option.userBetCount = userBetAmtAway
-    option.payoutEstimate = payoutEstAway * userBetAmtAway
+    option.winner = paidOut && (awayScore > homeScore)
+    option.winnings = winningsEstAway * userBetAmtAway
 
   }
   if (option.team == 'Draw') {
     option.pct = drawBetPct
     option.userBetCount = userBetAmtDraw
-    option.payoutEstimate = payoutEstDraw * userBetAmtDraw
+    option.winner = paidOut && (homeScore == awayScore)
+    option.winnings = winningsEstDraw * userBetAmtDraw
 
   }
 
 })
+
+
+//console.log(betOptions[1])
 
 //Get the number of bets made by the signed in user
 // const userBetAmt = participants.filter(p => {
@@ -312,6 +353,7 @@ betOptions.filter(option => {
               <RadioGroup.Option
                 key={option.num}
                 value={option}
+                disabled={gameStarted ? true : false}
                 className={({ active, checked }) =>
                   `${
                     active
@@ -353,7 +395,7 @@ betOptions.filter(option => {
                             </span>{' '}
                             <span aria-hidden="true">&middot;</span>{' '} */}
                             <span>{option.pct + '%'} pick rate</span>
-                            { option.userBetCount > 0 ? <span aria-hidden="true"> &middot; { option.userBetCount + (option.userBetCount == 1 ? ' pick' : ' picks') } by you &middot; { paidOut ? 'Winnings: ' : 'Psbl payout: ' } { +option.payoutEstimate.toFixed(5) } ETH</span> : '' }
+                            { option.userBetCount > 0 ? <span aria-hidden="true"> &middot; { option.userBetCount + (option.userBetCount == 1 ? ' pick' : ' picks') } by you { option.winner ? String.fromCharCode(183) + ' Winnings: ' + +option.winnings.toFixed(5) + ' ETH' : ( paidOut ? '' : String.fromCharCode(183) + ' Psbl winnings: ' + +option.winnings.toFixed(5) + ' ETH') } </span> : '' }
                           </RadioGroup.Description>
                         </div>
                       </div>
@@ -384,7 +426,7 @@ betOptions.filter(option => {
                   </div>
                 </>
               )}
-
+            { !gameStarted ? 
             <button className={disable ? styles.betBtnDisabled : styles.betBtn}
                     disabled={disable}
                     //keep it disabled before a bet option selection
@@ -406,6 +448,7 @@ betOptions.filter(option => {
             >
               Place Bet
             </button>
+            : '' }
             {
       //       </>
       // )

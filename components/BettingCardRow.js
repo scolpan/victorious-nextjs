@@ -9,8 +9,8 @@ const styles = {
 }
 
 const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon, 
-                         homeTeam, awayTeam, startTime, betPrice, paidOut,
-                         winningsPaid }) => {
+                         homeTeam, awayTeam, startTime, gameStarted, betPrice, 
+                         paidOut, winningsPaid }) => {
   
     const { 
       //placeBet,
@@ -45,6 +45,7 @@ const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon,
                 globalBetId={globalBetId}
                 gameId={gameId}
                 close={close} 
+                gameStarted={gameStarted}
                 betPrice={betPrice}
                 paidOut={paidOut}
                 winningsPaid={winningsPaid}

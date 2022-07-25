@@ -36,6 +36,7 @@ const BettingCard = ({title, icon, gameData}) => {
                 homeTeam={item.HomeTeam}
                 awayTeam={item.AwayTeam}
                 startTime={item.StartTime}
+                gameStarted={item.GameStarted}
                 betPrice={item.BetPrice}
                 paidOut={item.PaidOut}
                 winningsPaid={item.WinningsPaid}
