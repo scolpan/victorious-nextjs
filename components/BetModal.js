@@ -433,9 +433,9 @@ betOptions.filter(option => {
               // disabled={!tokenAmount || tokenAmount < 0}
                onClick={() => {
                 //selected.num != undefined ?
-                //console.log(selected.num)
+                //console.log(selected)
                 
-                if (selected.num !== undefined) {
+                if (selected !== undefined) {
 
                 setIsLoading(true)
                 placeBet(globalBetId, selected.num)

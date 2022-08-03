@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { ConnectButton } from 'web3uikit'
 import { VictoriousContext } from '../context/VictoriousContext'
 import Search from '../assets/svg/search'
+import { useRouter } from 'next/router'
+
 
 
 const styles = {
@@ -21,9 +23,23 @@ const styles = {
 
 
 
-
 const Header = () => {
 
+    const router = useRouter()
+
+
+    const myBets = () => {
+        router.push(
+          //`/currencies/price?symbol=${coinSymbol}&coin=${coinName}&price=${price}`,
+            `/mybets/info`,
+        )
+    }
+
+    const home = () => {
+        router.push(
+            `/`,
+        )
+    }
     
   return (
     <div className={styles.header}>
@@ -38,7 +54,7 @@ const Header = () => {
 
 
                 <div className={styles.navItem}>
-                    <div className={styles.navLink}>
+                    <div className={styles.navLink} onClick={home}>
                         Home
                     </div>
                     { /* <div className={styles.badge} /> */ }
@@ -48,7 +64,7 @@ const Header = () => {
                 </div>
 
                 <div className={styles.navItem}>
-                    <div className={styles.navLink}>
+                    <div className={styles.navLink} onClick={myBets}>
                         My Bets
                     </div>
                     { /* <div className={styles.badge} /> */ }

@@ -25,7 +25,7 @@ export const VictoriousContext = createContext()
 export var bets = []
 //export var betParticipants = []
 
-var gameCount = 0
+//var gameCount = 0
 
 var getSportIcon = (sportId) => {
         
@@ -52,10 +52,14 @@ var getLeagueIcon = (leagueId) => {
                 return <USA /> 
             }
         if (leagueId == 3 || leagueId == 4 ||
-            leagueId == 6 || leagueId == 10) { 
-                return (<> <Canada /> <USA /> </> )
+            leagueId == 10) { 
+                return (<> <USA /> <Canada /> </> )
             }        
-                
+            
+        if (leagueId == 6) {
+            return (<> <Canada /> <USA /> </> )        
+        }
+            
         if (leagueId == 11) { return <England /> }
         if (leagueId == 12) { return <France /> }
         if (leagueId == 13) { return <Germany /> }
@@ -115,6 +119,8 @@ export const VictoriousProvider = ({children}) => {
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
 
+            //await console.log('zero')
+
         } else {
             //setSports('')
             //bets = []
@@ -162,7 +168,7 @@ export const VictoriousProvider = ({children}) => {
                 await getCreatedGames(gameId, gameIds.SportId, gameIds.League.leagueId)
             })
 
-            //console.log(gameIds)
+            //await console.log('test')
             
         } else {
         }
@@ -192,6 +198,7 @@ export const VictoriousProvider = ({children}) => {
             //ensures update after useEffect
             //if (gameCount === bets.length) {
                 forceUpdate()
+                //console.log(tests)
             //}
             //await getGlobalBets(createdGames)
             
@@ -304,8 +311,10 @@ export const VictoriousProvider = ({children}) => {
                     LeagueId: gameCreated.LeagueId,
                     LeagueIcon: getLeagueIcon(gameCreated.LeagueId),
                     GameId: gameCreated.GamesCreated.gameId,
-                    HomeTeam: gameCreated.GamesCreated.homeTeam,
-                    AwayTeam: gameCreated.GamesCreated.awayTeam,
+                    //Regex for team names that remove duplicates due to mascot names coming in from The RunDown.
+                    //To prevent cases like "Manchester United Manchester".
+                    HomeTeam: gameCreated.GamesCreated.homeTeam.replace(/(\b\S.+\b)(?=.*\1)/g, "").trim(),
+                    AwayTeam: gameCreated.GamesCreated.awayTeam.replace(/(\b\S.+\b)(?=.*\1)/g, "").trim(),
                     //StartTime: convertedDate.toString(),
                     StartTime: convertedDate.toLocaleString(),
                     StartTimeRaw: gameCreated.GamesCreated.startTime,
