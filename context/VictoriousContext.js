@@ -88,6 +88,7 @@ export const VictoriousProvider = ({children}) => {
     const [resolvedGame, setResolvedGame] = useState([])
     const [globalBets, setGlobalBets] = useState([])
     const [participants, setParticipants] = useState([])
+    const [userBets, setUserBets] = useState([])
 
     const [, updateState] = useState()
     const forceUpdate = useCallback(() => updateState({}), [])
@@ -343,6 +344,45 @@ export const VictoriousProvider = ({children}) => {
     }
 
 
+    const getUserBets = async () => {
+
+        try {
+            if (!isAuthenticated) {
+                await connectWallet()
+            }
+
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'getUserBets',
+                abi: victoriousAbi,
+            }      
+            
+            if (isWeb3Enabled) {
+
+                const response = await Moralis.executeFunction(options)
+                
+                let globalBetIds = []
+
+                response.forEach(async (p) => {
+
+                    const index = globalBetIds.findIndex(x => x === p.toString()); 
+                    //Only insert if doesn't exist
+                    index === -1 ? await globalBetIds.push(p.toString()) : ""
+                
+                })
+
+                await setUserBets(globalBetIds)
+
+            }
+            
+        } 
+        catch(error) {
+
+        }
+
+    }
+
+
     const getBetParticipants = async (globalBetId) => {
         
         try {
@@ -362,7 +402,7 @@ export const VictoriousProvider = ({children}) => {
                 
                 const response = await Moralis.executeFunction(options)
 
-                var betParticipants = []
+                let betParticipants = []
 
                 response.forEach(async (p) => {
 
@@ -582,6 +622,8 @@ export const VictoriousProvider = ({children}) => {
             getBetParticipants,
             resolvedGame,
             getResolvedGame,
+            getUserBets,
+            userBets,
             isLoading,
             setIsLoading,
             disable,

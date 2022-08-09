@@ -31,7 +31,7 @@ const Header = () => {
     const myBets = () => {
         router.push(
           //`/currencies/price?symbol=${coinSymbol}&coin=${coinName}&price=${price}`,
-            `/mybets/info`,
+            `/user`,
         )
     }
 
@@ -59,13 +59,11 @@ const Header = () => {
                     </div>
                     { /* <div className={styles.badge} /> */ }
 
-                    
-
                 </div>
 
                 <div className={styles.navItem}>
                     <div className={styles.navLink} onClick={myBets}>
-                        My Bets
+                        My Games
                     </div>
                     { /* <div className={styles.badge} /> */ }
 

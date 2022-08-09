@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-import { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { VictoriousContext } from '../context/VictoriousContext'
 //import { test } from '../context/VictoriousContext'
 import fire from '../assets/fire.png'
@@ -18,47 +17,41 @@ const styles = {
 }
 
 
-const Games = () => {
-    const [checked, setChecked] = useState(false)
+const UserGames = () => {
+    //const [checked, setChecked] = useState(false)
 
     const {
-        isAuthenticated,
         bets,
+        getUserBets,
+        userBets,
 
     } = useContext(VictoriousContext) 
 
-    //Returns true if date given is newer than yesterday, false otherwise.
-    const checkDate = (date) => {
+    useEffect(() => {
 
-        let controlDate = date * 1000
+        getUserBets()
+      
+    }, []);
 
-        let today = new Date()
-        let yesterday = today.setDate(today.getDate() - 1)
+    //Returns true if bets match those of user, false otherwise.
+    const checkBet = (bet) => {
 
-        //console.log(yesterday)
-        //console.log(controlDate > yesterday)
-
-        return controlDate > yesterday
+        return userBets.includes(bet)
 
     }
     
-    //Show only games from the last 24 hours. 
-
     const gameBetData = bets
-        .filter(bet => { return checkDate(bet.StartTimeRaw) } )
-        .sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || 
+        .filter(bet => { return checkBet(bet.GlobalBetId) } )
+        .sort((a,b) => b.StartTimeRaw - a.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
                        a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
-
-
-    //console.log(betPrice)
 
 
   return (
     <div className='text-white'>
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>
-                <h1 className={styles.h1}>Available Games</h1>
+                <h1 className={styles.h1}>My Games</h1>
 
 {/*
                 <div className='flex'>
@@ -84,4 +77,4 @@ const Games = () => {
   )
 }
 
-export default Games
+export default UserGames
