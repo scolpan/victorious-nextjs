@@ -14,7 +14,9 @@ const styles = {
     betBtn: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
     betBtnDisabled: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
     loaderContainer: `flex items-center justify-center`,
-    info: `flex items-center justify-center`
+    info: `flex items-center justify-center`,
+    etherscan: `flex items-center justify-center text-blue-200 text-xl cursor-pointer`
+
 }
 
 const betOptions = [
@@ -105,6 +107,10 @@ const {
   getBetParticipants,
   participants,
   getResolvedGame,
+  setEtherscanLink,
+  etherscanLink,
+  //setShowEtherscanLink,
+  //showEtherscanLink,
   resolvedGame,
   isLoading,
   setIsLoading,
@@ -162,6 +168,10 @@ const awayScore = resolvedGame.awayScore
 
 const gameStatus = rundownStatus[resolvedGame.statusId]
 
+// console.log(gameStatus)
+// console.log(homeScore)
+// console.log(awayScore)
+// console.log(etherscanLink)
 
 const gameResult = () => {
 
@@ -202,7 +212,7 @@ useEffect(() => {
 
 // }, []);
 
-//console.log(paidOut)
+//console.log(globalBetId)
 
 // console.log('%' + homeWinBetPct)
 // console.log('%' + awayWinBetPct)
@@ -253,7 +263,7 @@ betOptions.filter(option => {
 
   if (option.team == 'Home') {
     option.pct = homeBetPct
-    option.score = homeScore
+    option.score = gameStatus != undefined ? homeScore : ''
     option.userBetCount = userBetAmtHome
     option.winner = paidOut && (homeScore > awayScore)
     option.winnings = winningsEstHome * userBetAmtHome
@@ -261,7 +271,7 @@ betOptions.filter(option => {
   }
   if (option.team == 'Away') {
     option.pct = awayBetPct
-    option.score = awayScore
+    option.score = gameStatus != undefined ? awayScore : ''
     option.userBetCount = userBetAmtAway
     option.winner = paidOut && (awayScore > homeScore)
     option.winnings = winningsEstAway * userBetAmtAway
@@ -380,7 +390,7 @@ betOptions.filter(option => {
                             {/*option.team*/}
                             {BuildSelection(option.num)}
                             {' '}
-                            { option.team != 'Draw' ? <span aria-hidden="true">&middot;</span> : '' } 
+                            { option.team != 'Draw' && gameStatus != undefined ? <span aria-hidden="true">&middot;</span> : '' } 
                             {' '}
                             { <span>{option.score}</span> }
                           </RadioGroup.Label>
@@ -423,6 +433,16 @@ betOptions.filter(option => {
               ) : (
                 <>
                   <div className='mt-[20px] mb-[35px] flex items-center justify-center'>
+                  {etherscanLink != '' ? 
+                  (
+                  <>
+                  <Link href={`${etherscanLink}`} className={styles.etherscan}>
+                    <a className={styles.etherscan} target='_blank'>
+                      Transaction Receipt
+                    </a>
+                  </Link>
+                  </>
+                  ) : (<></>)}
                   </div>
                 </>
               )}
@@ -438,6 +458,7 @@ betOptions.filter(option => {
                 if (selected !== undefined) {
 
                 setIsLoading(true)
+                //setShowEtherscanLink(false)
                 placeBet(globalBetId, selected.num)
                 setDisable(true)
 

@@ -15,7 +15,9 @@ const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon,
     const { 
       //placeBet,
       setIsLoading,
-      setDisable
+      setDisable,
+      setEtherscanLink,
+      //setShowEtherscanLink
      } = useContext(VictoriousContext)
 
 
@@ -30,6 +32,8 @@ const BettingCardRow = ({globalBetId, gameId, sportId, sportIcon, leagueIcon,
             <Popup onClose={() => {
                 setIsLoading(false)
                 setDisable(false)
+                setEtherscanLink('')
+                //setShowEtherscanLink(false)
                 //console.log('close')
               }} trigger=
             {

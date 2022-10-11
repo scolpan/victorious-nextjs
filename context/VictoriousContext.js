@@ -52,13 +52,13 @@ var getLeagueIcon = (leagueId) => {
                 return <USA /> 
             }
         if (leagueId == 3 || leagueId == 4 ||
-            leagueId == 10) { 
+            leagueId == 6 || leagueId == 10) { 
                 return (<> <USA /> <Canada /> </> )
             }        
             
-        if (leagueId == 6) {
-            return (<> <Canada /> <USA /> </> )        
-        }
+        // if (leagueId == 6) {
+        //     return (<> <Canada /> <USA /> </> )        
+        // }
             
         if (leagueId == 11) { return <England /> }
         if (leagueId == 12) { return <France /> }
@@ -78,8 +78,9 @@ export const VictoriousProvider = ({children}) => {
     //const [assets, setAssets] = useState([])
     const [currentAccount, setCurrentAccount] = useState('')
     const [recentTransactions, setRecentTransactions] = useState([])
-    const [disable, setDisable] = useState(false);
+    const [disable, setDisable] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    //const [showEtherscanLink, setShowEtherscanLink] = useState(false)
     const [betPrice, setBetPrice] = useState('')
     const [sports, setSports] = useState('')
     const [leagues, setLeagues] = useState([])
@@ -89,6 +90,8 @@ export const VictoriousProvider = ({children}) => {
     const [globalBets, setGlobalBets] = useState([])
     const [participants, setParticipants] = useState([])
     const [userBets, setUserBets] = useState([])
+    const [etherscanLink, setEtherscanLink] = useState('')
+    const [networkName, setNetwork] = useState('')
 
     const [, updateState] = useState()
     const forceUpdate = useCallback(() => updateState({}), [])
@@ -115,6 +118,8 @@ export const VictoriousProvider = ({children}) => {
         }
         
         if (isAuthenticated) {
+            
+            await getNetwork()
             await getSports()
             await getBetPrice()
             //await getLeagues(5) //Soccer
@@ -129,6 +134,12 @@ export const VictoriousProvider = ({children}) => {
         
     }, [isWeb3Enabled,isAuthenticated])
 
+
+    useEffect(async () => {
+        
+        console.log(networkName)
+        
+    }, [networkName])
 
 
     useEffect(async () => {
@@ -239,6 +250,10 @@ export const VictoriousProvider = ({children}) => {
 
                 //console.log(receipt)
 
+                setEtherscanLink(
+                    `https://goerli.etherscan.io/tx/${receipt.transactionHash}`
+                ,)
+
                 //Update participant list
                 await getBetParticipants(globalBetId)
 
@@ -267,6 +282,7 @@ export const VictoriousProvider = ({children}) => {
 
         setDisable(false)
         setIsLoading(false)
+        //setShowEtherscanLink(true)
 
     }
 
@@ -283,6 +299,25 @@ export const VictoriousProvider = ({children}) => {
         return now > gameStartDate
 
     }
+
+    const getNetwork = async () => {
+
+        const chainId = await ethereum.request({ method: 'eth_chainId' });
+        await setNetwork(getNetworkName(parseInt(chainId, 16)))
+    }
+
+    const getNetworkName = (chainId) => {
+
+        const networks = {
+            1: "Ethereum Mainnet",
+            5: "Ethereum Goerli Testnet",
+            10: "Optimism Mainnet",
+            137: "Polygon Mainnet",
+        }
+
+        return networks[chainId]
+    }
+
 
     const getGlobalBets = async (gameCreated) => {
         try {
@@ -620,6 +655,11 @@ export const VictoriousProvider = ({children}) => {
             placeBet,
             participants,
             getBetParticipants,
+            setEtherscanLink,
+            etherscanLink,
+            networkName,
+            //setShowEtherscanLink,
+            //showEtherscanLink,
             resolvedGame,
             getResolvedGame,
             getUserBets,

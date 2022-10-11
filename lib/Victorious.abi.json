@@ -27,6 +27,11 @@
   },
   {
     "inputs": [],
+    "name": "Victorious__GameRefundNotPossible",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "Victorious__UpkeepNotNeeded",
     "type": "error"
   },
@@ -736,16 +741,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_betPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_oraclePrice",
+        "name": "globalBetId",
         "type": "uint256"
       }
     ],
-    "name": "priceOverride",
+    "name": "refundGame",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -848,6 +848,24 @@
       }
     ],
     "name": "setNextRequestDate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_betPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_oraclePrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
