@@ -17,7 +17,8 @@ const styles = {
     badge: `rounded-full bg-blue-600 h-1 w-1 absolute bottom-5 right-0 top-1 ring-4`,
     inputContainer: `flex items-center justify-center p-2 rounded`,
     input: `bg-transparent outline-none text-white w-70 ml-3`,
-    network: `ml-2 font-medium text-xs leading-5 rounded-full text-neutral-50 bg-red-600 px-2 py-0.5 dark:text-neutral-50`
+    network_main: `ml-2 font-medium text-xs leading-5 rounded-full text-neutral-50 bg-red-600 px-2 py-0.5 dark:text-neutral-50`,
+    network_test: `ml-2 font-medium text-xs leading-5 rounded-full text-neutral-50 bg-green-600 px-2 py-0.5 dark:text-neutral-50`
 
 }
 
@@ -113,7 +114,7 @@ const Header = () => {
 
                 <div className={styles.inputContainer}>
                     
-                    <span className={styles.network}>
+                    <span className={networkName.includes("Mainnet") ? styles.network_main : styles.network_test}>
                     { 
                         networkName
                     }
