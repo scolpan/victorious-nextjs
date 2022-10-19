@@ -14,6 +14,7 @@ import BettingCard from './BettingCard'
 const styles = {
     gameWrapper: `mx-auto max-w-screen-2xl`,
     h1: `text-3xl text-white`,
+    h2: `text-xl text-white`,
     flexCenter: `flex items-center justify-center pb-[50px]`,
 }
 
@@ -24,6 +25,7 @@ const Games = () => {
     const {
         isAuthenticated,
         bets,
+        chainId
 
     } = useContext(VictoriousContext) 
 
@@ -56,8 +58,23 @@ const Games = () => {
 
   return (
     <div className='text-white'>
+        {
+    
+    chainId != 5 ?
+
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>
+
+            <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+
+            </div>
+        </div>
+
+    :
+
+        <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
+
                 <h1 className={styles.h1}>Available Games</h1>
 
 {/*
@@ -79,7 +96,7 @@ const Games = () => {
             </div>
 
         </div>
-
+    }
     </div>
   )
 }

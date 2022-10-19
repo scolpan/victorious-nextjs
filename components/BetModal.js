@@ -15,7 +15,7 @@ const styles = {
     betBtnDisabled: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
     loaderContainer: `flex items-center justify-center`,
     info: `flex items-center justify-center`,
-    etherscan: `flex items-center justify-center text-blue-200 text-xl cursor-pointer`
+    etherscan: `flex items-center justify-center text-lime-400 text-xl cursor-pointer`
 
 }
 

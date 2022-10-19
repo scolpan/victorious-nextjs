@@ -23,6 +23,7 @@ import USA from '../assets/svg/usa'
 
 export const VictoriousContext = createContext()
 export var bets = []
+export var chainId
 //export var betParticipants = []
 
 //var gameCount = 0
@@ -107,21 +108,41 @@ export const VictoriousProvider = ({children}) => {
         Moralis,
         user,
         isWeb3Enabled,
+        web3,
     } = useMoralis()
 
 
+    useEffect(async () => {
+
+        //console.log(web3)
+        // console.log(isWeb3Enabled)
+        // console.log(isAuthenticated)
+
+        //This should be a network change, refresh page not to get the
+        //Error: underlying network changed (event="changed" error.
+        if (isWeb3Enabled && isAuthenticated) {
+            location.reload()
+        }
+
+    }, [web3])
+
 
     useEffect(async () => {
-        //console.log(assetsData)
+
         if (!isWeb3Enabled) {
+
             await enableWeb3()
+
         }
         
         if (isAuthenticated) {
             
             await getNetwork()
-            await getSports()
-            await getBetPrice()
+
+            if (chainId == 5) {
+                await getSports()
+                await getBetPrice()
+            }
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
 
@@ -135,11 +156,11 @@ export const VictoriousProvider = ({children}) => {
     }, [isWeb3Enabled,isAuthenticated])
 
 
-    useEffect(async () => {
+    // useEffect(async () => {
         
-        console.log(networkName)
+    //     console.log(networkName)
         
-    }, [networkName])
+    // }, [networkName])
 
 
     useEffect(async () => {
@@ -302,11 +323,11 @@ export const VictoriousProvider = ({children}) => {
 
     const getNetwork = async () => {
 
-        const chainId = await ethereum.request({ method: 'eth_chainId' });
+        chainId = await ethereum.request({ method: 'eth_chainId' });
         await setNetwork(getNetworkName(parseInt(chainId, 16)))
     }
 
-    const getNetworkName = (chainId) => {
+    const getNetworkName = (_chainId) => {
 
         const networks = {
             1: "Ethereum Mainnet",
@@ -315,7 +336,11 @@ export const VictoriousProvider = ({children}) => {
             137: "Polygon Mainnet",
         }
 
-        return networks[chainId]
+        //console.log(networks[_chainId])
+
+        networks[_chainId] = networks[_chainId] == undefined ? 'Chain Id: ' + _chainId : networks[_chainId]
+
+        return networks[_chainId]
     }
 
 
@@ -652,6 +677,7 @@ export const VictoriousProvider = ({children}) => {
             isAuthenticated,
             user,
             bets,
+            chainId,
             placeBet,
             participants,
             getBetParticipants,
