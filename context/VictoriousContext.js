@@ -24,6 +24,7 @@ import USA from '../assets/svg/usa'
 export const VictoriousContext = createContext()
 export var bets = []
 export var chainId
+export var connected
 //export var betParticipants = []
 
 //var gameCount = 0
@@ -114,14 +115,18 @@ export const VictoriousProvider = ({children}) => {
 
     useEffect(async () => {
 
-        //console.log(web3)
-        // console.log(isWeb3Enabled)
-        // console.log(isAuthenticated)
+        // console.log(web3)
+        //console.log(isWeb3Enabled)
+        //console.log(isAuthenticated)
+        //connected = true
 
         //This should be a network change, refresh page not to get the
         //Error: underlying network changed (event="changed" error.
         if (isWeb3Enabled && isAuthenticated) {
             location.reload()
+        }
+        else if (!isAuthenticated) {
+            connected = false
         }
 
     }, [web3])
@@ -137,6 +142,8 @@ export const VictoriousProvider = ({children}) => {
         
         if (isAuthenticated) {
             
+            connected = true
+
             await getNetwork()
 
             if (chainId == 5) {
@@ -675,6 +682,7 @@ export const VictoriousProvider = ({children}) => {
         <VictoriousContext.Provider
         value = {{
             isAuthenticated,
+            connected,
             user,
             bets,
             chainId,

@@ -30,7 +30,8 @@ const Header = () => {
     const router = useRouter()
 
     const {
-        networkName
+        networkName,
+        connected
 
     } = useContext(VictoriousContext) 
 
@@ -114,11 +115,13 @@ const Header = () => {
 
                 <div className={styles.inputContainer}>
                     
+                    { connected ? 
                     <span className={networkName.includes("Mainnet") ? styles.network_main : styles.network_test}>
                     { 
                         networkName
                     }
-                    </span>
+                    </span> : ''
+                    }
      
                 </div>
 

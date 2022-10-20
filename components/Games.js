@@ -23,6 +23,7 @@ const Games = () => {
     const [checked, setChecked] = useState(false)
 
     const {
+        connected,
         isAuthenticated,
         bets,
         chainId
@@ -59,6 +60,16 @@ const Games = () => {
   return (
     <div className='text-white'>
         {
+
+            !connected ? (
+
+            <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
+
+            <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
+
+            </div>
+        </div> ) :
     
     chainId != 5 ?
 
