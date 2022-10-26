@@ -13,6 +13,7 @@ import BettingCard from './BettingCard'
 const styles = {
     gameWrapper: `mx-auto max-w-screen-2xl`,
     h1: `text-3xl text-white`,
+    h2: `text-xl text-white`,
     flexCenter: `flex items-center justify-center pb-[50px]`,
 }
 
@@ -21,17 +22,19 @@ const UserGames = () => {
     //const [checked, setChecked] = useState(false)
 
     const {
+        connected,
+        chainId,
         bets,
-        getUserBets,
+        //getUserBets,
         userBets,
 
     } = useContext(VictoriousContext) 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        getUserBets()
+    //     getUserBets()
       
-    }, []);
+    // }, []);
 
     //Returns true if bets match those of user, false otherwise.
     const checkBet = (bet) => {
@@ -49,6 +52,30 @@ const UserGames = () => {
 
   return (
     <div className='text-white'>
+        {
+
+        !connected ? (
+
+            <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
+
+            <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
+
+            </div>
+        </div> ) :
+
+        chainId != 5 ?
+
+        <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
+
+                <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+
+            </div>
+        </div>
+
+:
+
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>
                 <h1 className={styles.h1}>My Games</h1>
@@ -72,6 +99,7 @@ const UserGames = () => {
             </div>
 
         </div>
+}
 
     </div>
   )

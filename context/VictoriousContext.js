@@ -149,6 +149,7 @@ export const VictoriousProvider = ({children}) => {
             if (chainId == 5) {
                 await getSports()
                 await getBetPrice()
+                await getUserBets()
             }
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
