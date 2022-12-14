@@ -25,6 +25,7 @@ Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&ut
 ## How to run victorious.bet
 
 1) git clone the repository to your local
-2) run "yarn install" to install the dependancies.
-3) run "netlify link" and choose "Use current git remote origin" from the options.
-4) run "ntl dev" to run dev on your local.
+2) run "yarn install" to install the dependencies.
+3) run "netlify link" and choose "Use current git remote origin" from the options. 
+4) run "netlify env" for env variable options i.e. to link up with Moralis.
+5) run "ntl dev" to run dev on your local.

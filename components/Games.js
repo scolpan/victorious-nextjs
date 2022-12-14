@@ -25,7 +25,8 @@ const Games = () => {
     const {
         connected,
         isAuthenticated,
-        bets,
+        //bets,
+        globalBets,
         chainId
 
     } = useContext(VictoriousContext) 
@@ -47,8 +48,8 @@ const Games = () => {
     
     //Show only games from the last 24 hours. 
 
-    const gameBetData = bets
-        .filter(bet => { return checkDate(bet.StartTimeRaw) } )
+    const gameBetData = globalBets
+        //.filter(bet => { return checkDate(bet.StartTimeRaw) } )
         .sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
                        a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
@@ -61,27 +62,27 @@ const Games = () => {
     <div className='text-white'>
         {
 
-            !connected ? (
+    //         !connected ? (
 
-            <div className={styles.gameWrapper}>
-            <div className='flex justify-around'>
+    //         <div className={styles.gameWrapper}>
+    //         <div className='flex justify-around'>
 
-            <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
+    //         <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
 
-            </div>
-        </div> ) :
+    //         </div>
+    //     </div> ) :
     
-    chainId != 5 ?
+    // chainId != 5 ?
 
-        <div className={styles.gameWrapper}>
-            <div className='flex justify-around'>
+    //     <div className={styles.gameWrapper}>
+    //         <div className='flex justify-around'>
 
-            <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+    //         <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
 
-            </div>
-        </div>
+    //         </div>
+    //     </div>
 
-    :
+    // :
 
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>

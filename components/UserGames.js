@@ -24,7 +24,7 @@ const UserGames = () => {
     const {
         connected,
         chainId,
-        bets,
+        globalBets,
         //getUserBets,
         userBets,
 
@@ -43,7 +43,7 @@ const UserGames = () => {
 
     }
     
-    const gameBetData = bets
+    const gameBetData = globalBets
         .filter(bet => { return checkBet(bet.GlobalBetId) } )
         .sort((a,b) => b.StartTimeRaw - a.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
@@ -54,27 +54,27 @@ const UserGames = () => {
     <div className='text-white'>
         {
 
-        !connected ? (
+//         !connected ? (
 
-            <div className={styles.gameWrapper}>
-            <div className='flex justify-around'>
+//             <div className={styles.gameWrapper}>
+//             <div className='flex justify-around'>
 
-            <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
+//             <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
 
-            </div>
-        </div> ) :
+//             </div>
+//         </div> ) :
 
-        chainId != 5 ?
+//         chainId != 5 ?
 
-        <div className={styles.gameWrapper}>
-            <div className='flex justify-around'>
+//         <div className={styles.gameWrapper}>
+//             <div className='flex justify-around'>
 
-                <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+//                 <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
 
-            </div>
-        </div>
+//             </div>
+//         </div>
 
-:
+// :
 
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>

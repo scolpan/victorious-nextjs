@@ -8,10 +8,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   
   return (
 
-    <MoralisProvider 
-      serverUrl={process.env.NEXT_PUBLIC_SERVER ?? "ServerUrl Undefined Fallback"} 
-      appId={process.env.NEXT_PUBLIC_APP_ID ?? "AppId Undefined Fallback"}
-      >
+    // <MoralisProvider 
+    //   serverUrl={process.env.NEXT_PUBLIC_SERVER ?? "ServerUrl Undefined Fallback"} 
+    //   appId={process.env.NEXT_PUBLIC_APP_ID ?? "AppId Undefined Fallback"}
+    //   >
+
+    <MoralisProvider initializeOnMount={false} >
 
       <VictoriousProvider>
         <Component {...pageProps} />

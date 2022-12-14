@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useCallback } from 'react'
-import { useMoralis } from 'react-moralis'
+import { useMoralis, useWeb3Contract } from 'react-moralis'
 import { victoriousAddress } from '../lib/constants'
 import victoriousAbi from '../lib/Victorious.abi.json'
 import { ethers, BigNumber } from 'ethers'
@@ -22,7 +22,7 @@ import USA from '../assets/svg/usa'
 
 
 export const VictoriousContext = createContext()
-export var bets = []
+//export var bets = []
 export var chainId
 export var connected
 //export var betParticipants = []
@@ -84,10 +84,10 @@ export const VictoriousProvider = ({children}) => {
     const [isLoading, setIsLoading] = useState(false)
     //const [showEtherscanLink, setShowEtherscanLink] = useState(false)
     const [betPrice, setBetPrice] = useState('')
-    const [sports, setSports] = useState('')
-    const [leagues, setLeagues] = useState([])
-    const [gameIds, setGameIds] = useState([])
-    const [createdGames, setCreatedGames] = useState([])
+    //const [sports, setSports] = useState('')
+    //const [leagues, setLeagues] = useState([])
+    //const [gameIds, setGameIds] = useState([])
+    //const [createdGames, setCreatedGames] = useState([])
     const [resolvedGame, setResolvedGame] = useState([])
     const [globalBets, setGlobalBets] = useState([])
     const [participants, setParticipants] = useState([])
@@ -95,17 +95,15 @@ export const VictoriousProvider = ({children}) => {
     const [etherscanLink, setEtherscanLink] = useState('')
     const [networkName, setNetwork] = useState('')
 
-    const [, updateState] = useState()
-    const forceUpdate = useCallback(() => updateState({}), [])
+    //const [, updateState] = useState()
+    //const forceUpdate = useCallback(() => updateState({}), [])
 
 
     //const sportId = 5
 
 
     const {
-        authenticate,
-        isAuthenticated,
-        enableWeb3,
+
         Moralis,
         user,
         isWeb3Enabled,
@@ -113,40 +111,38 @@ export const VictoriousProvider = ({children}) => {
     } = useMoralis()
 
 
-    useEffect(async () => {
+    //useEffect(async () => {
 
-        // console.log(web3)
+        //console.log(web3)
         //console.log(isWeb3Enabled)
         //console.log(isAuthenticated)
         //connected = true
 
         //This should be a network change, refresh page not to get the
         //Error: underlying network changed (event="changed" error.
+        
+        /*
         if (isWeb3Enabled && isAuthenticated) {
             location.reload()
         }
         else if (!isAuthenticated) {
             connected = false
         }
+        */
 
-    }, [web3])
+    //}, [web3])
 
 
     useEffect(async () => {
-
-        if (!isWeb3Enabled) {
-
-            await enableWeb3()
-
-        }
         
-        if (isAuthenticated) {
+        if (isWeb3Enabled) {
             
             connected = true
 
             await getNetwork()
 
             if (chainId == 5) {
+
                 await getSports()
                 await getBetPrice()
                 await getUserBets()
@@ -154,112 +150,17 @@ export const VictoriousProvider = ({children}) => {
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
 
-            //await console.log('zero')
 
         } else {
-            //setSports('')
-            //bets = []
+
         }
         
-    }, [isWeb3Enabled,isAuthenticated])
+    }, [isWeb3Enabled])
 
-
-    // useEffect(async () => {
-        
-    //     console.log(networkName)
-        
-    // }, [networkName])
-
-
-    useEffect(async () => {
-        if (!isWeb3Enabled) {
-            await enableWeb3()
-        }
-        if (isAuthenticated) {
-            for (let i = 1; i <= sports; i++) {
-                await getLeagues(i)
-            }
-        } else {
-        }
-    }, [sports])
-
-
-    useEffect(async () => {
-        if (!isWeb3Enabled) {
-            await enableWeb3()
-        }
-        if (isAuthenticated) {
-            //await getGameIds(leagues.leagueId)
-            //console.log(leagues)
-            leagues.Leagues.forEach(async (league) => {
-                await getGameIds(league, leagues.SportId)
-            })
-        } else {
-        }
-    }, [leagues])
-
-
-    useEffect(async () => {
-        if (!isWeb3Enabled) {
-            await enableWeb3()
-        }
-        if (isAuthenticated) {
-
-            gameIds.Games.forEach(async (gameId) => {
-                await getCreatedGames(gameId, gameIds.SportId, gameIds.League.leagueId)
-            })
-
-            //await console.log('test')
-            
-        } else {
-        }
-    }, [gameIds])
-
-
-
-    useEffect(async () => {
-        if (!isWeb3Enabled) {
-            await enableWeb3()
-        }
-        if (isAuthenticated) {
-            
-            await getGlobalBets(createdGames)
-            
-        } else {
-        }
-    }, [createdGames])
-
-
-    useEffect(async () => {
-        if (!isWeb3Enabled) {
-            await enableWeb3()
-        }
-        if (isAuthenticated) {
-            
-            //ensures update after useEffect
-            //if (gameCount === bets.length) {
-                forceUpdate()
-                //console.log(tests)
-            //}
-            //await getGlobalBets(createdGames)
-            
-        } else {
-        }
-    }, [globalBets])
-
-
-
-    const connectWallet = async () => {
-        await enableWeb3()
-        await authenticate()
-    }
 
 
     const placeBet = async (globalBetId, betPick) => {
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
 
             const options = {
                 contractAddress: victoriousAddress,
@@ -354,9 +255,7 @@ export const VictoriousProvider = ({children}) => {
 
     const getGlobalBets = async (gameCreated) => {
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
+
             const options = {
                 contractAddress: victoriousAddress,
                 functionName: 'getBet',
@@ -395,12 +294,14 @@ export const VictoriousProvider = ({children}) => {
                     //Participants: participants
                 }
 
-                await setGlobalBets(globalBetObj)
+                //await bets.push(globalBetObj)
+
+                await setGlobalBets(globalBets => [...globalBets, globalBetObj])
 
                 //Look for already inserted globalBetId
-                const index = bets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
+                //const index = bets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
                 //Only insert if doesn't exist
-                index === -1 ? await bets.push(globalBetObj) : "" //console.log(globalBetObj.GlobalBetId)
+                //index === -1 ? await bets.push(globalBetObj) : "" //console.log(globalBetObj.GlobalBetId)
                 //console.log(gameCount)
 
             }
@@ -415,9 +316,6 @@ export const VictoriousProvider = ({children}) => {
     const getUserBets = async () => {
 
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
 
             const options = {
                 contractAddress: victoriousAddress,
@@ -454,9 +352,7 @@ export const VictoriousProvider = ({children}) => {
     const getBetParticipants = async (globalBetId) => {
         
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
+
             const options = {
                 contractAddress: victoriousAddress,
                 functionName: 'getBetParticipants',
@@ -500,9 +396,7 @@ export const VictoriousProvider = ({children}) => {
 
     const getCreatedGames = async (gameId, sportId, leagueId) => {
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
+
             const options = {
                 contractAddress: victoriousAddress,
                 functionName: 'getGameCreated',
@@ -521,11 +415,9 @@ export const VictoriousProvider = ({children}) => {
                     GamesCreated: response
                 }
 
-                await setCreatedGames(gameCreatedObj)
 
-                //gameCount++
-                //console.log("LeagueId: " + leagueId)
-                //console.log(response)
+                await getGlobalBets(gameCreatedObj)
+
             }
 
         }
@@ -537,9 +429,7 @@ export const VictoriousProvider = ({children}) => {
 
     const getResolvedGame = async (gameId) => {
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
+
             const options = {
                 contractAddress: victoriousAddress,
                 functionName: 'getGameResolved',
@@ -567,9 +457,7 @@ export const VictoriousProvider = ({children}) => {
     
     const getGameIds = async (league, sportId) => {
         try {
-            if (!isAuthenticated) {
-                await connectWallet()
-            }
+
             const options = {
                 contractAddress: victoriousAddress,
                 functionName: 'getGameIds',
@@ -588,9 +476,10 @@ export const VictoriousProvider = ({children}) => {
                     Games: response
                 }
 
-                await setGameIds(gameObj)
-                //console.log("LeagueId: " + leagueId)
-                //console.log(response)
+                gameObj.Games.forEach(async (gameId) => {
+                    await getCreatedGames(gameId, gameObj.SportId, gameObj.League.leagueId)
+                })
+
             }
 
         }
@@ -599,49 +488,9 @@ export const VictoriousProvider = ({children}) => {
         }
     }
 
-
-    const getLeagues = async (sportId) => {
-        try {
-            if (!isAuthenticated) {
-                await connectWallet()
-                //console.log('Connected')
-            }          
-            const options = {
-                contractAddress: victoriousAddress,
-                functionName: 'getLeagues',
-                abi: victoriousAbi,
-                params: {
-                    sportId: sportId
-                },
-            }
-
-            //console.log(options)
-
-            if (isWeb3Enabled) {
-                const response = await Moralis.executeFunction(options)
-
-                const leagueObj = {
-                    SportId: sportId,
-                    Leagues: response
-                }
-
-                await setLeagues(leagueObj)
-                //console.log(response)
-                //console.log("SportId: " + sportId)
-            }
-        
-        } 
-        catch (error) {
-            console.log(error)
-        }
-    }
-
     const getBetPrice = async () => {
         
-        if (!isAuthenticated) {
-            await connectWallet()
-        }
-
+        
         const options = {
             contractAddress: victoriousAddress,
             functionName: 'getBetPrice',
@@ -656,13 +505,9 @@ export const VictoriousProvider = ({children}) => {
 
         }
     }
-    
+
     const getSports = async () => {
 
-        if (!isAuthenticated) {
-            await connectWallet()
-        }
-        
         const options = {
             contractAddress: victoriousAddress,
             functionName: 'getSports',
@@ -673,8 +518,46 @@ export const VictoriousProvider = ({children}) => {
             
             const response = await Moralis.executeFunction(options)
 
-            await setSports(response.toString())
+            for (let i = 1; i <= response; i++) {
+                await getLeagues(i)
+            }
       
+        }
+
+    }
+
+
+    const getLeagues = async (sportId) => {
+        try {
+          
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'getLeagues',
+                abi: victoriousAbi,
+                params: {
+                    sportId: sportId
+                },
+            }
+
+
+            if (isWeb3Enabled) {
+                const response = await Moralis.executeFunction(options)
+
+                const leagueObj = {
+                    SportId: sportId,
+                    Leagues: response
+                }
+                
+
+                leagueObj.Leagues.forEach(async (league) => {
+                    await getGameIds(league, leagueObj.SportId)
+                })
+
+            }
+        
+        } 
+        catch (error) {
+            console.log(error)
         }
     }
 
@@ -682,10 +565,11 @@ export const VictoriousProvider = ({children}) => {
     return (
         <VictoriousContext.Provider
         value = {{
-            isAuthenticated,
+            //isAuthenticated,
             connected,
             user,
-            bets,
+            //bets,
+            globalBets,
             chainId,
             placeBet,
             participants,
