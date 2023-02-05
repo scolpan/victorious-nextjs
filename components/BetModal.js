@@ -13,6 +13,8 @@ const styles = {
     content: `flex w-full ml-[30px] justify-center`,
     betBtn: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
     betBtnDisabled: `h-[30px] bg-blue-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
+    payOutBtn: `h-[30px] bg-green-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center cursor-pointer`,
+    payOutBtnDisabled: `h-[30px] bg-green-500 mt-[10px] rounded-lg p-[15px] flex mx-auto text-white justify-center items-center disabled:opacity-60`,
     loaderContainer: `flex items-center justify-center`,
     info: `flex items-center justify-center`,
     etherscan: `flex items-center justify-center text-lime-400 text-xl cursor-pointer`
@@ -102,16 +104,20 @@ const [selected, setSelected] = useState(betOptions)
 
 
 const {
-  user,
+  //user,
+  accounts,
   placeBet,
+  payOut,
   getBetParticipants,
   participants,
   getResolvedGame,
+  getUserBetDetails,
   setEtherscanLink,
   etherscanLink,
   //setShowEtherscanLink,
   //showEtherscanLink,
   resolvedGame,
+  userBetDetail,
   isLoading,
   setIsLoading,
   disable,
@@ -124,6 +130,7 @@ useEffect(() => {
 
   getBetParticipants(globalBetId)
   getResolvedGame(gameId)
+  getUserBetDetails(accounts[0], globalBetId)
 
 }, []);
 
@@ -168,6 +175,9 @@ const awayScore = resolvedGame.awayScore
 
 const gameStatus = rundownStatus[resolvedGame.statusId]
 
+
+
+
 // console.log(gameStatus)
 // console.log(homeScore)
 // console.log(awayScore)
@@ -175,7 +185,7 @@ const gameStatus = rundownStatus[resolvedGame.statusId]
 
 const gameResult = () => {
 
-  let result;
+  let result
 
   if (resolvedGame.statusId == 8 || resolvedGame.statusId == 11) {
 
@@ -194,6 +204,32 @@ const gameResult = () => {
   }  
 
 }
+
+
+const displayPayOut = () => {
+  
+  let payOut
+
+  //console.log(userBetDetail)
+
+  if (!userBetDetail.PaidOut) {
+
+    if (userBetDetail.HomeWin > 0 && gameResult() == 0) {
+      payOut = true
+    }
+    else if (userBetDetail.AwayWin > 0 && gameResult() == 1) {
+      payOut = true
+    }
+    else if (userBetDetail.Tie > 0 && gameResult() == 2) {
+      payOut = true
+    }
+
+  }
+  return payOut
+}
+
+//console.log(isWinner())
+
 
 //Select corresponding radio option when the final result is available
 useEffect(() => {
@@ -227,7 +263,7 @@ const winningsEstDraw = (totalCashPool / drawBetAmt) * 0.95
 //Get the number of bets made by the signed in user for the home team
 const userBetAmtHome = participants.filter(p => {
 
-  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+  if (p.ParticipantAddress == accounts[0] &&
       p.BetPick == 0) {
         return true
   }
@@ -238,7 +274,7 @@ const userBetAmtHome = participants.filter(p => {
 //Get the number of bets made by the signed in user for the away team
 const userBetAmtAway = participants.filter(p => {
 
-  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+  if (p.ParticipantAddress == accounts[0] &&
       p.BetPick == 1) {
         return true
   }
@@ -249,7 +285,7 @@ const userBetAmtAway = participants.filter(p => {
 //Get the number of bets made by the signed in user for a draw
 const userBetAmtDraw = participants.filter(p => {
 
-  if (p.ParticipantAddress.toLowerCase() == user.attributes.ethAddress &&
+  if (p.ParticipantAddress == accounts[0] &&
       p.BetPick == 2) {
         return true
   }
@@ -265,7 +301,7 @@ betOptions.filter(option => {
     option.pct = homeBetPct
     option.score = gameStatus != undefined ? homeScore : ''
     option.userBetCount = userBetAmtHome
-    option.winner = paidOut && (homeScore > awayScore)
+    option.winner = gameResult() == 0 //(homeScore > awayScore)
     option.winnings = winningsEstHome * userBetAmtHome
 
   }
@@ -273,14 +309,14 @@ betOptions.filter(option => {
     option.pct = awayBetPct
     option.score = gameStatus != undefined ? awayScore : ''
     option.userBetCount = userBetAmtAway
-    option.winner = paidOut && (awayScore > homeScore)
+    option.winner = gameResult() == 1 //(awayScore > homeScore)
     option.winnings = winningsEstAway * userBetAmtAway
 
   }
   if (option.team == 'Draw') {
     option.pct = drawBetPct
     option.userBetCount = userBetAmtDraw
-    option.winner = paidOut && (homeScore == awayScore)
+    option.winner = gameResult() == 2 //(homeScore == awayScore)
     option.winnings = winningsEstDraw * userBetAmtDraw
 
   }
@@ -469,6 +505,31 @@ betOptions.filter(option => {
             >
               Place Bet
             </button>
+            : displayPayOut() ? 
+            
+            <button className={disable ? styles.payOutBtnDisabled : styles.payOutBtn}
+                    disabled={disable}
+                    //keep it disabled before a bet option selection
+              // disabled={!tokenAmount || tokenAmount < 0}
+               onClick={() => {
+                //selected.num != undefined ?
+                //console.log(selected)
+                
+                if (selected !== undefined) {
+
+                setIsLoading(true)
+                //setShowEtherscanLink(false)
+                payOut(globalBetId)
+                setDisable(true)
+
+                }
+                
+                
+               }}
+            >
+              Collect Winnings
+            </button>
+
             : '' }
             {
       //       </>

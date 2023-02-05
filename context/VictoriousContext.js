@@ -25,6 +25,7 @@ export const VictoriousContext = createContext()
 //export var bets = []
 export var chainId
 export var connected
+export var accounts
 //export var betParticipants = []
 
 //var gameCount = 0
@@ -89,6 +90,7 @@ export const VictoriousProvider = ({children}) => {
     //const [gameIds, setGameIds] = useState([])
     //const [createdGames, setCreatedGames] = useState([])
     const [resolvedGame, setResolvedGame] = useState([])
+    const [userBetDetail, setUserBetDetail] = useState([])
     const [globalBets, setGlobalBets] = useState([])
     const [participants, setParticipants] = useState([])
     const [userBets, setUserBets] = useState([])
@@ -143,9 +145,17 @@ export const VictoriousProvider = ({children}) => {
 
             if (chainId == 5) {
 
+                const provider = new ethers.providers.Web3Provider(window.ethereum)     
+                //const signer = await provider.getSigner()     
+                //const signedMessage = await signer.signMessage("Message")
+                accounts = await provider.listAccounts();
+
+                //console.log(accounts[0])
+
                 await getSports()
                 await getBetPrice()
                 await getUserBets()
+                //await getuserBetDetails()
             }
             //await getLeagues(5) //Soccer
             //await getGameIds(10) //MLS
@@ -157,6 +167,54 @@ export const VictoriousProvider = ({children}) => {
         
     }, [isWeb3Enabled])
 
+
+    const payOut = async (globalBetId) => {
+
+        try {
+
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'payOut',
+                abi: victoriousAbi,
+                params: {
+                    globalBetId: globalBetId
+                },
+            }
+
+            if (isWeb3Enabled) {
+
+                const response = await Moralis.executeFunction(options)
+                const receipt = await response.wait()
+
+                //console.log(receipt)
+
+                setEtherscanLink(
+                    `https://goerli.etherscan.io/tx/${receipt.transactionHash}`
+                ,)
+
+                //Update participant list
+                //await getBetParticipants(globalBetId)
+
+                //const participants = await getBetParticipants(globalBetId)
+                //get globalbet object with globalbetid
+
+            }
+
+
+        }
+
+        catch (error) {
+            //console.log(error)
+            //User rejecting the transaction or any other error,
+            //display a message and enable some elements
+            //setDisable(false)
+            //setIsLoading(false)
+        }
+
+        setDisable(false)
+        setIsLoading(false)
+
+    }
 
 
     const placeBet = async (globalBetId, betPick) => {
@@ -426,6 +484,41 @@ export const VictoriousProvider = ({children}) => {
         }
     }
 
+    const getUserBetDetails = async (participant, globalBetId) => {
+        try {
+
+            const options = {
+                contractAddress: victoriousAddress,
+                functionName: 'getuserBetDetails',
+                abi: victoriousAbi,
+                params: {
+                    participant: participant,
+                    globalBetId: globalBetId
+                },
+            }
+
+            if (isWeb3Enabled) {
+                const response = await Moralis.executeFunction(options)
+
+                console.log(response)
+
+                const getUserBetDetailObj = {
+                    PaidOut: response.paidOut,
+                    HomeWin: response.amtPicked.homeWin.toNumber(),
+                    AwayWin: response.amtPicked.awayWin.toNumber(),
+                    Tie: response.amtPicked.tie.toNumber()
+                }
+
+                await setUserBetDetail(getUserBetDetailObj)
+
+            }
+
+        }
+        catch {
+            
+        }
+    }
+
 
     const getResolvedGame = async (gameId) => {
         try {
@@ -567,11 +660,13 @@ export const VictoriousProvider = ({children}) => {
         value = {{
             //isAuthenticated,
             connected,
-            user,
+            //user,
+            accounts,
             //bets,
             globalBets,
             chainId,
             placeBet,
+            payOut,
             participants,
             getBetParticipants,
             setEtherscanLink,
@@ -580,8 +675,10 @@ export const VictoriousProvider = ({children}) => {
             //setShowEtherscanLink,
             //showEtherscanLink,
             resolvedGame,
+            userBetDetail,
             getResolvedGame,
             getUserBets,
+            getUserBetDetails,
             userBets,
             isLoading,
             setIsLoading,
