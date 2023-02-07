@@ -248,7 +248,7 @@ useEffect(() => {
 
 // }, []);
 
-//console.log(globalBetId)
+console.log(globalBetId)
 
 // console.log('%' + homeWinBetPct)
 // console.log('%' + awayWinBetPct)

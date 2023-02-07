@@ -48,14 +48,23 @@ const Games = () => {
     
     //Show only games from the last 24 hours. 
 
-    const gameBetData = globalBets
+    //const index = globalBets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
+
+
+    const gbFiltered = globalBets.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+            t.GlobalBetId === value.GlobalBetId
+        ))
+    )
+
+    const gameBetData = gbFiltered
         //.filter(bet => { return checkDate(bet.StartTimeRaw) } )
         .sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
                        a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
 
 
-    //console.log(betPrice)
+    //console.log(gameBetData.sort((a,b) => a.GlobalBetId - b.GlobalBetId))
 
 
   return (

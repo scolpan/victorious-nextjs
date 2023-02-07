@@ -500,7 +500,7 @@ export const VictoriousProvider = ({children}) => {
             if (isWeb3Enabled) {
                 const response = await Moralis.executeFunction(options)
 
-                console.log(response)
+                //console.log(response)
 
                 const getUserBetDetailObj = {
                     PaidOut: response.paidOut,
