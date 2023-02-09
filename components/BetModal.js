@@ -542,3 +542,4 @@ betOptions.filter(option => {
 
 
 export default BetModal
+
