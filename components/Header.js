@@ -42,13 +42,14 @@ const Header = () => {
         )
     }
 
+    /*
     const privateBets = () => {
         router.push(
           //`/currencies/price?symbol=${coinSymbol}&coin=${coinName}&price=${price}`,
             `/private`,
         )
     }
-
+    */
     const home = () => {
         router.push(
             `/`,
@@ -85,7 +86,7 @@ const Header = () => {
                 </div>
 
                 <div className={styles.navItem}>
-                    <div className={styles.navLink} > {/* onClick={privateBets} */}
+                    <div className={styles.navLink} >
                         Private Pool
                     </div>
                     { /* <div className={styles.badge} /> */ }
