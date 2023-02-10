@@ -87,7 +87,7 @@ const Header = () => {
 
                 <div className={styles.navItem}>
                     <div className={styles.navLink} >
-                        Private Pool
+                        Private
                     </div>
                     { /* <div className={styles.badge} /> */ }
 
