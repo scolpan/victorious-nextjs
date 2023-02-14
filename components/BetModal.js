@@ -177,7 +177,7 @@ const gameStatus = rundownStatus[resolvedGame.statusId]
 
 
 
-
+// console.log(gameId)
 // console.log(gameStatus)
 // console.log(homeScore)
 // console.log(awayScore)
@@ -248,7 +248,7 @@ useEffect(() => {
 
 // }, []);
 
-console.log(globalBetId)
+//console.log(globalBetId)
 
 // console.log('%' + homeWinBetPct)
 // console.log('%' + awayWinBetPct)

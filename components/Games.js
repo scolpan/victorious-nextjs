@@ -31,6 +31,7 @@ const Games = () => {
 
     } = useContext(VictoriousContext) 
 
+
     //Returns true if date given is newer than yesterday, false otherwise.
     const checkDate = (date) => {
 
@@ -46,11 +47,9 @@ const Games = () => {
 
     }
     
-    //Show only games from the last 24 hours. 
-
-    //const index = globalBets.findIndex(x => x.GlobalBetId === globalBetObj.GlobalBetId); 
 
 
+    //Unique GlobalBetId
     const gbFiltered = globalBets.filter((value, index, self) =>
         index === self.findIndex((t) => (
             t.GlobalBetId === value.GlobalBetId
@@ -58,7 +57,7 @@ const Games = () => {
     )
 
     const gameBetData = gbFiltered
-        //.filter(bet => { return checkDate(bet.StartTimeRaw) } )
+        .filter(bet => { return checkDate(bet.StartTimeRaw) } )
         .sort((a,b) => a.StartTimeRaw - b.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
                        a.GlobalBetId - b.GlobalBetId); // b - a for reverse sort
