@@ -105,6 +105,7 @@ const [selected, setSelected] = useState(betOptions)
 
 const {
   //user,
+  coin,
   accounts,
   placeBet,
   payOut,
@@ -382,8 +383,9 @@ betOptions.filter(option => {
             {homeTeam} - {awayTeam}
           </div>
           
+          <div className={styles.info}>Bet price: { betPrice } { coin }</div>
           <div className={styles.info}>Game status: { gameStatus }</div>
-          <div className={styles.info}>Total cash pool: { totalCashPool } ETH</div>
+          <div className={styles.info}>Total cash pool: { totalCashPool } {coin}</div>
           <div className={styles.info}>{ participants.length } total { participants.length == 1 ? ' pick' : ' picks' }</div>
           {/* <div className={styles.info}>{ userBetAmt + (userBetAmt == 1 ? ' pick' : ' picks') } by you</div> */}
 
@@ -441,7 +443,7 @@ betOptions.filter(option => {
                             </span>{' '}
                             <span aria-hidden="true">&middot;</span>{' '} */}
                             <span>{option.pct + '%'} pick rate</span>
-                            { option.userBetCount > 0 ? <span aria-hidden="true"> &middot; { option.userBetCount + (option.userBetCount == 1 ? ' pick' : ' picks') } by you { option.winner ? String.fromCharCode(183) + ' Winnings: ' + +option.winnings.toFixed(5) + ' ETH' : ( paidOut ? '' : String.fromCharCode(183) + ' Psbl winnings: ' + +option.winnings.toFixed(5) + ' ETH') } </span> : '' }
+                            { option.userBetCount > 0 ? <span aria-hidden="true"> &middot; { option.userBetCount + (option.userBetCount == 1 ? ' pick' : ' picks') } by you { option.winner ? String.fromCharCode(183) + ' Winnings: ' + +option.winnings.toFixed(5) + ' ' + coin : ( paidOut ? '' : String.fromCharCode(183) + ' Psbl winnings: ' + +option.winnings.toFixed(5) + ' ' + coin) } </span> : '' }
                           </RadioGroup.Description>
                         </div>
                       </div>

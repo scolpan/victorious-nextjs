@@ -24,6 +24,7 @@ import USA from '../assets/svg/usa'
 export const VictoriousContext = createContext()
 export var chainId
 export var accounts
+//export var coinType
 
 
 var getSportIcon = (sportId) => {
@@ -86,6 +87,7 @@ export const VictoriousProvider = ({children}) => {
     const [userBets, setUserBets] = useState([])
     const [etherscanLink, setEtherscanLink] = useState('')
     const [networkName, setNetwork] = useState('')
+    const [coin, setCoin] = useState('')
 
     //const [, updateState] = useState()
     //const forceUpdate = useCallback(() => updateState({}), [])
@@ -123,8 +125,10 @@ export const VictoriousProvider = ({children}) => {
         if (isWeb3Enabled) {
             
             await getNetwork()
+            await getPctWinner()
 
-            if (chainId == 5) {
+            //Goerli or Polygon for now
+            if (chainId == 5 ) { //|| chainId == 137) {
 
                 const provider = new ethers.providers.Web3Provider(window.ethereum)     
                 
@@ -281,6 +285,19 @@ export const VictoriousProvider = ({children}) => {
 
         chainId = await ethereum.request({ method: 'eth_chainId' });
         await setNetwork(getNetworkName(parseInt(chainId, 16)))
+        await setCoin(getCoinName(parseInt(chainId, 16)))
+    }
+
+    const getCoinName = (_chainId) => {
+
+        const coins = {
+            1: "ETH",
+            5: "GoerliETH",
+            10: "OP",
+            137: "MATIC"
+        }
+
+        return coins[_chainId]
     }
 
     const getNetworkName = (_chainId) => {
@@ -291,8 +308,6 @@ export const VictoriousProvider = ({children}) => {
             10: "Optimism Mainnet",
             137: "Polygon Mainnet",
         }
-
-        //console.log(networks[_chainId])
 
         networks[_chainId] = networks[_chainId] == undefined ? 'Chain Id: ' + _chainId : networks[_chainId]
 
@@ -588,6 +603,25 @@ export const VictoriousProvider = ({children}) => {
         }
     }
 
+
+    const getPctWinner = async () => {
+
+        const options = {
+            contractAddress: victoriousAddress,
+            functionName: 'pctWinner',
+            abi: victoriousAbi,
+        }
+
+        if (isWeb3Enabled) {
+            
+            const response = await Moralis.executeFunction(options)
+
+            console.log(response.toNumber())
+      
+        }
+
+    }
+
     const getSports = async () => {
 
         const options = {
@@ -662,6 +696,7 @@ export const VictoriousProvider = ({children}) => {
             setEtherscanLink,
             etherscanLink,
             networkName,
+            coin,
             //setShowEtherscanLink,
             //showEtherscanLink,
             resolvedGame,
