@@ -86,7 +86,7 @@ const Games = () => {
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>
 
-            <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+            <h1 className={styles.h2}>Wrong network, please use Polygon (for real money) or Goerli (for testing).</h1>  
 
             </div>
         </div>

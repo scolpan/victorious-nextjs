@@ -125,7 +125,6 @@ export const VictoriousProvider = ({children}) => {
         if (isWeb3Enabled) {
             
             await getNetwork()
-            await getPctWinner()
 
             //Goerli or Polygon for now
             if (chainId == 5 ) { //|| chainId == 137) {
@@ -147,6 +146,7 @@ export const VictoriousProvider = ({children}) => {
 
                 await getSports()
                 await getBetPrice()
+                await getPctWinner()
                 await getUserBets()
                 //await getuserBetDetails()
             }
