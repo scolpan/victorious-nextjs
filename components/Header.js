@@ -31,7 +31,7 @@ const Header = () => {
 
     const {
         networkName,
-        connected
+        isWeb3Enabled
 
     } = useContext(VictoriousContext) 
 
@@ -87,9 +87,18 @@ const Header = () => {
 
                 <div className={styles.navItem}>
                     <div className={styles.navLink} >
+                        About
+                    </div>
+
+
+                    
+                </div>
+
+{/* 
+                <div className={styles.navItem}>
+                    <div className={styles.navLink} >
                         Private
                     </div>
-                    { /* <div className={styles.badge} /> */ }
 
 
                     
@@ -101,7 +110,6 @@ const Header = () => {
 
                         
                     </div>
-                    { /* <div className={styles.badge} /> */ }
                 </div>
 
                 <div className={styles.navItem}>
@@ -110,8 +118,9 @@ const Header = () => {
 
                         
                     </div>
-                    { /* <div className={styles.badge} /> */ }
-                </div>
+                </div> 
+                
+*/}
 
             </nav>
 
@@ -133,7 +142,7 @@ const Header = () => {
 
                 <div className={styles.inputContainer}>
                     
-                    { connected ? 
+                    { isWeb3Enabled ? 
                     <span className={networkName.includes("Mainnet") ? styles.network_main : styles.network_test}>
                     { 
                         networkName

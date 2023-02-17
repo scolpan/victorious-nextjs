@@ -22,13 +22,9 @@ import USA from '../assets/svg/usa'
 
 
 export const VictoriousContext = createContext()
-//export var bets = []
 export var chainId
-export var connected
 export var accounts
-//export var betParticipants = []
 
-//var gameCount = 0
 
 var getSportIcon = (sportId) => {
         
@@ -78,17 +74,11 @@ var getLeagueIcon = (leagueId) => {
 
 export const VictoriousProvider = ({children}) => {
 
-    //const [assets, setAssets] = useState([])
     const [currentAccount, setCurrentAccount] = useState('')
     const [recentTransactions, setRecentTransactions] = useState([])
     const [disable, setDisable] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-    //const [showEtherscanLink, setShowEtherscanLink] = useState(false)
     const [betPrice, setBetPrice] = useState('')
-    //const [sports, setSports] = useState('')
-    //const [leagues, setLeagues] = useState([])
-    //const [gameIds, setGameIds] = useState([])
-    //const [createdGames, setCreatedGames] = useState([])
     const [resolvedGame, setResolvedGame] = useState([])
     const [userBetDetail, setUserBetDetail] = useState([])
     const [globalBets, setGlobalBets] = useState([])
@@ -105,52 +95,51 @@ export const VictoriousProvider = ({children}) => {
 
 
     const {
-
         Moralis,
-        user,
         isWeb3Enabled,
         web3,
     } = useMoralis()
 
 
-    //useEffect(async () => {
+    useEffect(async () => {
 
-        //console.log(web3)
-        //console.log(isWeb3Enabled)
-        //console.log(isAuthenticated)
-        //connected = true
-
-        //This should be a network change, refresh page not to get the
-        //Error: underlying network changed (event="changed" error.
+        //const provider = new ethers.providers.Web3Provider(window.ethereum, 'any')     
         
-        /*
-        if (isWeb3Enabled && isAuthenticated) {
-            location.reload()
-        }
-        else if (!isAuthenticated) {
-            connected = false
-        }
-        */
+        //Refresh when the account is changed from metamask.
+        ethereum.on("accountsChanged", (accounts) => location.reload())
+        //{
+            //console.log('ACCOUNTS CHANGED ' + accounts[0]);
+        //})
 
-    //}, [web3])
+        //Refresh when the chain is changed from metamask.
+        ethereum.on('chainChanged', (_chainId) => location.reload());
+
+
+    }, [web3])
 
 
     useEffect(async () => {
         
         if (isWeb3Enabled) {
             
-            connected = true
-
             await getNetwork()
 
             if (chainId == 5) {
 
                 const provider = new ethers.providers.Web3Provider(window.ethereum)     
-                //const signer = await provider.getSigner()     
-                //const signedMessage = await signer.signMessage("Message")
+                
+
+                // const getLibrary = (provider, connector) => {
+                //     return new ethers.providers.Web3Provider(provider, 'any')
+                // };
+
+                // const signer = await provider.getSigner()     
+                // const signedMessage = await signer.signMessage("Hello there Mufucka!!")
+
+
                 accounts = await provider.listAccounts();
 
-                //console.log(accounts[0])
+                //console.log(accounts)
 
                 await getSports()
                 await getBetPrice()
@@ -162,7 +151,7 @@ export const VictoriousProvider = ({children}) => {
 
 
         } else {
-
+            //connected = false
         }
         
     }, [isWeb3Enabled])
@@ -659,8 +648,9 @@ export const VictoriousProvider = ({children}) => {
         <VictoriousContext.Provider
         value = {{
             //isAuthenticated,
-            connected,
+            //connected,
             //user,
+            isWeb3Enabled,
             accounts,
             //bets,
             globalBets,
