@@ -22,8 +22,9 @@ const UserGames = () => {
     //const [checked, setChecked] = useState(false)
 
     const {
-        connected,
+        //connected,
         chainId,
+        isWeb3Enabled,
         globalBets,
         //getUserBets,
         userBets,
@@ -36,14 +37,19 @@ const UserGames = () => {
       
     // }, []);
 
+    const gbFiltered = globalBets.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+            t.GlobalBetId === value.GlobalBetId
+        ))
+    )
+
+
     //Returns true if bets match those of user, false otherwise.
     const checkBet = (bet) => {
-
         return userBets.includes(bet)
-
     }
     
-    const gameBetData = globalBets
+    const gameBetData = gbFiltered
         .filter(bet => { return checkBet(bet.GlobalBetId) } )
         .sort((a,b) => b.StartTimeRaw - a.StartTimeRaw || 
                        b.LeagueId - a.LeagueId || 
@@ -54,39 +60,34 @@ const UserGames = () => {
     <div className='text-white'>
         {
 
-//         !connected ? (
+        !isWeb3Enabled ? (
 
-//             <div className={styles.gameWrapper}>
-//             <div className='flex justify-around'>
+            <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
 
-//             <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
+            <h1 className={styles.h2}>Not connected, please connect with Metamask.</h1>  
 
-//             </div>
-//         </div> ) :
+            </div>
+        </div> ) :
 
-//         chainId != 5 ?
+        chainId != 5 ?
 
-//         <div className={styles.gameWrapper}>
-//             <div className='flex justify-around'>
+        <div className={styles.gameWrapper}>
+            <div className='flex justify-around'>
 
-//                 <h1 className={styles.h2}>Wrong network, please use Polygon or Goerli (for testing).</h1>  
+            <h1 className={styles.h2}>Wrong network, please use Polygon (for real money) or Goerli (for testing).</h1>  
 
-//             </div>
-//         </div>
+            </div>
+        </div>
 
-// :
+        :
 
         <div className={styles.gameWrapper}>
             <div className='flex justify-around'>
                 <h1 className={styles.h1}>My Games</h1>
 
-{/*
-                <div className='flex'>
-                    <p className='text-gray-400 '>Highlights &nbsp;</p>
-                    <ReactSwitch checked={checked} onChange={() => {setChecked(!checked)}} />
-                </div>
 
-*/}
+
             </div>
 
             <br />
